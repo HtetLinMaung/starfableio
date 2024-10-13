@@ -1,0 +1,33 @@
+.main-header {
+  background-color: #1d1e22;
+  color: #fff;
+  padding: 10px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 98;
+}
+
+.main-header nav {
+  display: flex;
+  align-items: center;
+  font-size: 0.9rem;
+}
+
+.main-header nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+#svg-span {
+  margin-left: 1rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  width: 1.5rem;
+}

@@ -1,0 +1,323 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import "../../../styles/blog.css";
+// Define the static content for the blog post
+const blogPost = {
+  title: "Rust ရဲ့ Borrowing နှင့် Lifetimes ကို ရှင်းပြခြင်း",
+  date: "May 21, 2024",
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Rust ရဲ့ borrowing နဲ့ lifetimes အကြောင်းကို လေ့လာပါ, memory safety နဲ့ efficient data handling အတွက် အရေးကြီးသော concept တွေပါ။ ဒီ tutorial မှာ ရိုးရှင်းတဲ့ ဥပမာများနှင့်အတူ အခြေခံအကြောင်းအရာများကို ရှင်းပြထားသည်။"
+    />
+    <meta
+      name="keywords"
+      content="Rust, Rust Programming, Rust Tutorial, Borrowing, Lifetimes, Memory Safety"
+    />
+    <meta property="og:title" content="{blogPost.title}" />
+    <meta
+      property="og:description"
+      content="Rust ရဲ့ borrowing နဲ့ lifetimes အကြောင်းကို လေ့လာပါ, memory safety နဲ့ efficient data handling အတွက် အရေးကြီးသော concept တွေပါ။ ဒီ tutorial မှာ ရိုးရှင်းတဲ့ ဥပမာများနှင့်အတူ အခြေခံအကြောင်းအရာများကို ရှင်းပြထားသည်။"
+    />
+    <meta property="og:image" content="/borrowing-and-lifetimes-cover.png" />
+    <meta
+      property="og:url"
+      content="https://yourwebsite.com/tutorials/rust/borrowing-and-lifetimes"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <title>{blogPost.title}</title>
+    <link rel="stylesheet" href="/atom-one-dark.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="/highlight.min.js"></script>
+    <script src="/scripts/blog.js" defer></script>
+    <style>
+      p,
+      li {
+        line-height: 2.5rem;
+      }
+    </style>
+  </head>
+  <Layout>
+    <button class="menu-toggle" onclick="toggleMenu()"
+      ><svg
+        class="up-svg"
+        width="32"
+        height="32"
+        viewBox="0 0 32 32"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <g clip-path="url(#clip0_24_7)">
+          <path
+            fill-rule="evenodd"
+            clip-rule="evenodd"
+            d="M15.0573 11.0573C15.3074 10.8074 15.6464 10.667 16 10.667C16.3535 10.667 16.6926 10.8074 16.9427 11.0573L24.4853 18.6C24.7282 18.8515 24.8626 19.1883 24.8596 19.5379C24.8565 19.8875 24.7163 20.2219 24.4691 20.4691C24.2219 20.7163 23.8875 20.8565 23.5379 20.8596C23.1883 20.8626 22.8515 20.7282 22.6 20.4853L16 13.8853L9.4 20.4853C9.14853 20.7282 8.81172 20.8626 8.46213 20.8596C8.11253 20.8565 7.77812 20.7163 7.5309 20.4691C7.28369 20.2219 7.14347 19.8875 7.14043 19.5379C7.13739 19.1883 7.27179 18.8515 7.51466 18.6L15.0573 11.0573Z"
+            fill="white"></path>
+        </g>
+        <defs>
+          <clipPath id="clip0_24_7">
+            <rect width="32" height="32" fill="white"></rect>
+          </clipPath>
+        </defs>
+      </svg>
+    </button>
+    <nav class="side-nav">
+      <a href="#Borrowing" onclick="scrollToSection(event, '#Borrowing')"
+        >Borrowing</a
+      >
+      <a
+        href="#ImmutableBorrowing"
+        onclick="scrollToSection(event, '#ImmutableBorrowing')"
+        >Immutable Borrowing</a
+      >
+      <a
+        href="#MutableBorrowing"
+        onclick="scrollToSection(event, '#MutableBorrowing')"
+        >Mutable Borrowing</a
+      >
+      <a href="#Lifetimes" onclick="scrollToSection(event, '#Lifetimes')"
+        >Lifetimes</a
+      >
+      <a
+        href="#LifetimeAnnotations"
+        onclick="scrollToSection(event, '#LifetimeAnnotations')"
+        >Lifetime Annotations</a
+      >
+      <a
+        href="#PuttingItAllTogether"
+        onclick="scrollToSection(event, '#PuttingItAllTogether')"
+        >အားလုံးကို စုပေါင်းခြင်း</a
+      >
+      <a href="#Conclusion" onclick="scrollToSection(event, '#Conclusion')"
+        >နိဂုံး</a
+      >
+      <a href="#WhatNext" onclick="scrollToSection(event, '#WhatNext')"
+        >နောက်တစ်ခုက ဘာဖြစ်မလဲ?</a
+      >
+    </nav>
+    <article class="blog-post">
+      <h1>{blogPost.title}</h1>
+      <p class="date">{blogPost.date}</p>
+      <div class="author-profile">
+        <img src="/profile.jpeg" alt="Author Photo" class="author-photo" />
+        <div>
+          <p class="author-name">ထက်လင်းမောင်</p>
+        </div>
+      </div>
+      <img
+        src="/borrowing-and-lifetimes-cover.png"
+        alt="Rust Programming Concepts"
+        class="blog-image"
+      />
+      <div class="content">
+        <p>
+          Borrowing နှင့် lifetimes က Rust ရဲ့ အရေးကြီးတဲ့ concepts တွေဖြစ်ပြီး၊
+          အရင် tutorial က သင်လေ့လာခဲ့တဲ့ ownership system ကိုအခြေခံထားပါတယ်။
+          ဒါတွေက တန်ဖိုးတွေကို ဘယ်လို access လုပ်ရမလဲ၊ နဲ့ memory safety ကို
+          ဘယ်လိုထိန်းသိမ်းရမလဲ ဆိုတာကို အကောင်းဆုံးစီမံခန့်ခွဲပေးပါတယ်။ အခု
+          concepts တွေကို ရိုးရှင်းတဲ့ ဥပမာတွေနဲ့ ပိုမိုနက်နက်ရှိုင်းရှိုင်း
+          လေ့လာကြရအောင်။
+        </p>
+
+        <h2 id="Borrowing">Borrowing</h2>
+
+        <p>
+          Borrowing က တန်ဖိုးတစ်ခုကို ပိုင်ဆိုင်မှု မပြောင်းပဲ သုံးနိုင်စေပါတယ်။
+          Borrowing ဟာ အမျိုးအစား ၂ မျိုးရှိပါတယ်: immutable နဲ့ mutable ပါ။
+        </p>
+
+        <h2 id="ImmutableBorrowing">Immutable Borrowing</h2>
+
+        <p>
+          တန်ဖိုးတစ်ခုကို immutably borrow လုပ်တဲ့အခါ၊ သင်ဟာ တန်ဖိုးကို
+          ဖတ်နိုင်ပေမယ့် ပြောင်းလဲလို့် မရပါဘူး။ သင်မှာ immutable borrows
+          အများကြီး ရှိနိုင်ပါတယ်။
+        </p>
+
+        <pre
+          class="language-rust"><code>fn main() &#123;
+    let s1 = String::from("hello");
+    let s2 = &s1; // immutable borrow
+    let s3 = &s1; // နောက်ထပ် immutable borrow
+    println!("s1: &#123;&#125;", s1); // s1 က သုံးလို့ရသေးပါတယ်
+    println!("s2: &#123;&#125;", s2); // s2 က တန်ဖိုးကို သုံးနိုင်ပါတယ်
+    println!("s3: &#123;&#125;", s3); // s3 လည်း တန်ဖိုးကို သုံးနိုင်ပါတယ်
+&#125;</code></pre>
+
+        <h2 id="MutableBorrowing">Mutable Borrowing</h2>
+
+        <p>
+          တန်ဖိုးတစ်ခုကို mutably borrow လုပ်တဲ့အခါ၊ သင်ဟာ အဲ့ဒီတန်ဖိုးကို
+          ပြောင်းလဲနိုင်ပေမယ့် တစ်ချိန်တည်းမှာ mutable borrow
+          တစ်ခုသာရှိနိုင်ပါသည်။
+        </p>
+
+        <pre
+          class="language-rust"><code>fn main() &#123;
+    let mut s1 = String::from("မင်္ဂလာပါ");
+    let s2 = &mut s1; // mutable borrow
+    s2.push_str("ကမ္ဘာလောက"); // တန်ဖိုးကို ပြောင်းလဲပါ
+    println!("s2: &#123;&#125;", s2); // s2 က တန်ဖိုးကို အသုံးပြုနိုင်ပြီး ပြောင်းလဲနိုင်ပါတယ်
+&#125;
+</code></pre>
+
+        <p>
+          သင်ဟာ တစ်ချိန်တည်းမှာ mutable နဲ့ immutable borrows နှစ်ခုလုံးကို
+          မရှိနိုင်ပါ။
+        </p>
+
+        <pre
+          class="language-rust"><code>fn main() &#123;
+    let mut s1 = String::from("မင်္ဂလာပါ");
+    let s2 = &s1; // immutable borrow
+    let s3 = &mut s1; // mutable borrow - error!
+    println!("s2: &#123;&#125;", s2);
+&#125;
+</code></pre>
+
+        <p>
+          ဒီအရာကြောင့် compile-time error ဖြစ်မည်မှာဖြစ်ပြီး Rust က memory
+          safety ကိုသေချာစေရန် simultaneous mutable နဲ့ immutable borrows ကို
+          ကာကွယ်ပေးပါသည်။
+        </p>
+
+        <h2 id="Lifetimes">Lifetimes</h2>
+
+        <p>
+          Lifetimes က references တွေကို လိုအပ်သလို valid ဖြစ်နေအောင်
+          ထိန်းသိမ်းပေးသည်။ ဒါက ဖျက်သိမ်းပြီးသား data ကို reference
+          လုပ်မိခြင်းကို ကာကွယ်ပေးသည်။
+        </p>
+
+        <p>ရိုးရှင်းတဲ့ lifetimes ဥပမာကို ကြည့်ကြရအောင်:</p>
+
+        <pre
+          class="language-rust"><code>fn main() &#123;
+    let r;
+    &#123;
+        let x = 5;
+        r = &x;
+    &#125;
+    // println!("&#123;&#125;", r); // compile-time error: `x` ရဲ့ အသက်ရှည်မှု မလုံလောက်ပါ
+&#125;
+</code></pre>
+
+        <p>ဒီကုဒ်မှာ:</p>
+        <ul>
+          <li>
+            <code>x</code> ကို inner block အတွင်းမှာ ဖန်တီးပြီး၊ block အဆုံးမှာ scope
+            ထဲကနေ ထွက်သွားပါတယ်။
+          </li>
+          <li>
+            <code>r</code> ဟာ <code>x</code> ကို reference လုပ်ထားပေမယ့်၊ block ပြီးသွားတဲ့နောက်မှာ
+            <code>x</code> valid မဖြစ်တော့လို့ compile-time error ဖြစ်ပေါ်စေပါတယ်။
+          </li>
+        </ul>
+
+        <h2 id="LifetimeAnnotations">Lifetime Annotations</h2>
+
+        <p>
+          တစ်ခါတစ်လေမှာတော့ lifetimes ကို အသေးစိတ်ပြောဖော်ဖို့ လိုအပ်တတ်ပါတယ်။
+          ဒါကို annotations နဲ့ ပြုလုပ်နိုင်ပါတယ်။ ဒါဟာ references ကို
+          parameters အနေနဲ့ ယူပြီး references ကို ပြန်ပေးတဲ့ function တွေမှာ
+          ရိုးရိုးရှင်းရှင်းတွေ့နိုင်ပါတယ်။
+        </p>
+
+        <pre
+          class="rust-language"><code>fn longest&lt;'a&gt;(x: &'a str, y: &'a str) -&gt; &'a str &#123;
+    if x.len() > y.len() &#123;
+        x
+    &#125; else &#123;
+        y
+    &#125;
+&#125;
+
+fn main() &#123;
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is &#123;&#125;", result);
+&#125;
+</code></pre>
+
+        <p>ဒီကုဒ်မှာ:</p>
+        <ul>
+          <li>
+            <code>'a</code> ဟာ lifetime parameter ဖြစ်ပြီး Rust ကို <code
+              >x</code
+            >, <code>y</code> references နဲ့ return value အားလုံးမှာ lifetime တူတယ်လို့
+            ပြောပြပါတယ်။
+          </li>
+        </ul>
+
+        <h2 id="PuttingItAllTogether">အားလုံးကို စုပေါင်းခြင်း</h2>
+
+        <p>
+          Ownership, borrowing, နဲ့ lifetimes တွေ ဘယ်လို
+          ပေါင်းစပ်အလုပ်]လုပ်သလဲဆိုတာကို Comprehensive ဥပမာတစ်ခုကြည့်ကြရအောင်:
+        </p>
+
+        <pre
+          class="language-rust"><code>fn calculate_length(s: &String) -> usize &#123;
+    s.len()
+&#125;
+
+fn main() &#123;
+    let s1 = String::from("မင်္ဂလာပါ");
+    let length = calculate_length(&s1); // immutable borrow
+    println!("The length of '&#123;&#125;' is &#123;&#125;", s1, length); // s1 က သုံးလို့ရသေးပါတယ်
+&#125;
+</code></pre>
+
+        <p>ဒီကုဒ်မှာ:</p>
+        <ul>
+          <li>
+            <code>calculate_length</code> function က <code>s1</code> ကို immutably
+            borrow လုပ်ပါတယ်။
+          </li>
+          <li>
+            Function ကိုခေါ်ပြီးနောက်မှာလည်း <code>s1</code> valid ဖြစ်နေဆဲဖြစ်ပြီး၊
+            ဒါဟာ borrowing က functions တွေကို data ကို ပိုင်ဆိုင်မှုမပြောင်းပဲ access
+            လုပ်ခွင့်ပြုပုံကို ပြသနေပါတယ်။
+          </li>
+        </ul>
+
+        <h2 id="Conclusion">နိဂုံး</h2>
+
+        <p>
+          Borrowing နဲ့ lifetimes ကိုနားလည်မှုက efficient Rust code ရေးဖို့အတွက်
+          အရေးကြီးပါတယ်။ ဒီ concepts တွေက references တွေကို valid
+          ဖြစ်အောင်ပြုလုပ်ပေးပြီး memory errors မဖြစ်စေရန် ကာကွယ်ပေးပါတယ်။
+          အစမှာတော့ ဒီအကြောင်းတွေကို စိတ်ရှုပ်ဖွယ်ရာဖြစ်နိုင်ပေမယ့်
+          လေ့ကျင့်မှုနဲ့အတူ ပိုမိုနားလည်လွယ်လာပါတယ်။
+        </p>
+
+        <h2 id="WhatNext">နောက်တစ်ခုက ဘာဖြစ်မလဲ?</h2>
+
+        <p>
+          အခုတော့ သင် borrowing နဲ့ lifetimes ကိုနားလည်သွားပြီဆိုတော့၊
+          ပိုမိုရှုပ်ထွေးတဲ့ Rust concepts တွေကို နားလည်နိုင်ဖို့
+          ပိုပြီးအဆင်သင့်ဖြစ်ပါပြီ။ နောက်သင်ခန်းစာမှာတော့ Rust မှာ Result နဲ့
+          Option types ကိုသုံးပြီး error handling ဘယ်လိုလုပ်ရမလဲဆိုတာကို
+          လေ့လာပါမယ်။
+        </p>
+
+        <a style="color: #99ddff" href="/tutorials/rust/error-handling"
+          >နောက်သင်ခန်းစာ: Rust Error Handling - Result နဲ့ Option Types</a
+        >
+
+        <p>နောက်သင်ခန်းစာကို စောင့်မျှော်ပါ။ ကုဒ်ရေးရင်း ပျော်ပါစေ!</p>
+      </div>
+    </article>
+  </Layout>
+</html>

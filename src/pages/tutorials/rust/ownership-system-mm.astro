@@ -1,0 +1,146 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import "../../../styles/blog.css";
+// Define the static content for the blog post
+const blogPost = {
+    title: "Rust ရဲ့ Ownership System ကို နားလည်ခြင်း",
+    date: "May 16, 2024",
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Rust ရဲ့ ownership system အကြောင်း လေ့လာပါ။ Garbage collector မလိုဘဲ memory safety ကို ဘယ်လို အထောက်အပံ့ပေးနိုင်သလဲဆိုတာ ရိုးရှင်းတဲ့ ဥပမာတွေနဲ့ ရှင်းပြပေးထားပါတယ်။">
+        <meta name="keywords" content="Rust, Rust Programming, Rust Tutorial, Ownership System, Memory Safety">
+        <meta property="og:title" content="{blogPost.title}">
+        <meta property="og:description" content="Rust ရဲ့ ownership system အကြောင်း လေ့လာပါ။ Garbage collector မလိုဘဲ memory safety ကို ဘယ်လို အထောက်အပံ့ပေးနိုင်သလဲဆိုတာ ရိုးရှင်းတဲ့ ဥပမာတွေနဲ့ ရှင်းပြပေးထားပါတယ်။">
+        <meta property="og:image" content="/rust-ownership-system-cover.png">
+        <meta property="og:url" content="https://yourwebsite.com/tutorials/rust/ownership-system-mm">
+        <meta name="twitter:card" content="summary_large_image">
+        <title>{blogPost.title}</title>
+        <link rel="stylesheet" href="/atom-one-dark.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+        <script defer src="/highlight.min.js"></script>
+        <script src="/scripts/blog.js" defer></script>
+        <style>
+            p, li {
+                line-height: 2.5rem;
+            }
+        </style>
+    </head>
+<Layout>
+    <button class="menu-toggle"onclick="toggleMenu()" ><svg class="up-svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_24_7)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.0573 11.0573C15.3074 10.8074 15.6464 10.667 16 10.667C16.3535 10.667 16.6926 10.8074 16.9427 11.0573L24.4853 18.6C24.7282 18.8515 24.8626 19.1883 24.8596 19.5379C24.8565 19.8875 24.7163 20.2219 24.4691 20.4691C24.2219 20.7163 23.8875 20.8565 23.5379 20.8596C23.1883 20.8626 22.8515 20.7282 22.6 20.4853L16 13.8853L9.4 20.4853C9.14853 20.7282 8.81172 20.8626 8.46213 20.8596C8.11253 20.8565 7.77812 20.7163 7.5309 20.4691C7.28369 20.2219 7.14347 19.8875 7.14043 19.5379C7.13739 19.1883 7.27179 18.8515 7.51466 18.6L15.0573 11.0573Z" fill="white"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_24_7">
+        <rect width="32" height="32" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+        </button>
+    <nav class="side-nav">
+        <a href="#Ownership"onclick="scrollToSection(event, '#Ownership')">Ownership</a>
+        <a href="#Borrowing" onclick="scrollToSection(event, '#Borrowing')">Borrowing</a>
+        <a href="#Lifetimes" onclick="scrollToSection(event, '#Lifetimes')">Lifetimes</a>
+        <a href="#Conclusion" onclick="scrollToSection(event, '#Conclusion')">နိဂုံး</a>
+        <a href="#WhatNext" onclick="scrollToSection(event, '#WhatNext')">နောက်တစ်ခုက ဘာဖြစ်မလဲ?</a>
+    </nav>
+    <article class="blog-post">
+        <h1>{blogPost.title}</h1>
+        <p class="date">{blogPost.date}</p>
+        <div class="author-profile">
+            <img src="/profile.jpeg" alt="Author Photo" class="author-photo">
+            <div>
+                <p class="author-name">ထက်လင်းမောင်</p>
+            </div>
+        </div>
+        <img src="/rust-ownership-system-cover.png" alt="Rust Programming Concepts" class="blog-image">
+        <div class="content">
+            <p>Rust ရဲ့ ownership system က အရမ်းထူးခြားပါတယ်။ Garbage collector မလိုဘဲ memory safety ကို အထောက်အပံ့ပေးနိုင်ပါတယ်။ ဒီသင်ခန်းစာမှာတော့ Rust ရဲ့ ownership system ရဲ့ အခြေခံကို ရိုးရှင်းတဲ့ ဥပမာတွေနဲ့အတူ ရှင်းပြပါမယ်။</p>
+            <p><b>အဓိက အချက်များ</b></p>
+            <ol>
+                <li><b>Ownership</b></li>
+                <li><b>Borrowing</b></li>
+                <li><b>Lifetimes</b></li>
+            </ol>
+
+            <h2 id="Ownership">Ownership</h2>
+
+            <p>Rust မှာ တန်ဖိုးတစ်ခုစီမှာ ပိုင်ရှင်တစ်ယောက်သာရှိပါတယ်။ ပိုင်ရှင်ဟာ scope ထဲကနေ ထွက်သွားတဲ့အခါ၊ အဲ့ဒီတန်ဖိုးကို ဖျက်ပစ်ပါတယ် (ဥပမာ- memory က လွတ်ပါတယ်။)</p>
+            
+            <p>ဥပမာတစ်ခုကို ကြည့်လိုက်ရအောင်:</p>
+
+            <pre class="language-rust"><code>fn main() &#123;
+    let s1 = String::from("မင်္ဂလာပါ");
+    let s2 = s1; // s1 ဟာ အခု အသုံးမပြုနိုင်တော့ပါဘူး၊ s2 က အဲ့ဒီတန်ဖိုးရဲ့ ပိုင်ရှင်အသစ် ဖြစ်လာပါတယ်။
+    // println!("&#123;&#125;", s1); // ဒီအရာကြောင့် compile-time error ဖြစ်နိုင်ပါတယ်
+    println!("&#123;&#125;", s2);
+&#125;</code></pre>
+<p>ဒီကုဒ်မှာ:</p>
+<ul>
+    <li><code>s1</code> က <code>"မင်္ဂလာပါ"</code> စာကြောင်းကို ပိုင်ဆိုင်ပါတယ်။</li>
+    <li>ကျွန်ုပ်တို့ <code>s1</code> ကို <code>s2</code> တွင် သတ်မှတ်တဲ့အခါ၊ <code>s1</code> ဟာ စာကြောင်းကို မပိုင်ဆိုင်တော့ပါဘူး။ <code>s2</code> က ပိုင်ရှင်အသစ် ဖြစ်လာပါတယ်။</li>
+    <li>ဒါနောက် <code>s1</code> ကို အသုံးပြုဖို့ကြိုးစားရင်၊ <code>s1</code> က အသုံးမပြုနိုင်တော့တဲ့အတွက် compile-time error ဖြစ်နိုင်ပါတယ်။</li>
+</ul>
+
+            <h2 id="Borrowing">Borrowing</h2>
+            <p>တစ်ခါတစ်လေမှာတော့ သင့်ကုဒ်ရဲ့ အစိတ်အပိုင်း အမျိုးမျိုးက တန်ဖိုးတစ်ခုကို ပိုင်ဆိုင်မှု ပြောင်းလဲခြင်းမရှိဘဲ access လုပ်ဖို့ လိုအပ်တတ်ပါတယ်။ ဒီနေရာမှာ borrowing ဆိုတဲ့ အရာကို အသုံးပြုဖို့ လိုလာပါတယ်။ သင်တန်ဖိုးတစ်ခုကို immutably (မပြောင်းလဲနိုင်ဘဲ) သို့မဟုတ် mutably (ပြောင်းလဲနိုင်ပြီး) borrow လုပ်နိုင်ပါတယ်။</p>
+
+            <h3>Immutable Borrowing</h3>
+            <pre class="language-rust"><code>fn main() &#123;
+    let s1 = String::from("မင်္ဂလာပါ");
+    let s2 = &s1; // s1 ကို immutably borrow လုပ်ထားပါတယ်
+    println!("&#123;&#125;", s1); // s1 ဟာ နောက်မှ သုံးလို့ရသေးပါတယ်
+    println!("&#123;&#125;", s2); // s2 က တန်ဖိုးကို access လုပ်နိုင်ပါတယ်
+&#125;</code></pre>
+
+            <h3>Mutable Borrowing</h3>
+            <pre class="language-rust"><code>fn main() &#123;
+    let mut s1 = String::from("မင်္ဂလာပါ");
+    let s2 = &mut s1; // s1 ကို mutably borrow လုပ်ထားပါတယ်
+    s2.push_str("ကမ္ဘာလောက"); // တန်ဖိုးကို ပြောင်းလဲပါ
+    println!("&#123;}", s2);
+&#125;</code></pre>
+
+<p>ဒီကုဒ်မှာ:</p>
+<ul>
+    <li>သင်မှာ immutable references (<code>&s1</code>) အများကြီး ရှိနိုင်ပါတယ်၊ ဒါပေမယ့် တစ်ချိန်တည်းမှာ mutable reference (<code>&mut s1</code>) တစ်ခုသာ ရှိနိုင်ပါတယ်။</li>
+    <li>immutable references ရှိနေစဉ်မှာ mutable reference ကို မရှိနိုင်ပါ။</li>
+</ul>
+
+<h3 id="Lifetimes">Lifetimes</h3>
+<p>Lifetimes က references တွေကို သင်လိုအပ်သမျှအချိန်တိုင်အောင် အသုံးပြုနိုင်ဖို့ အထောက်အပံ့ပေးပါတယ်။ Rust က lifetimes ကို အသုံးပြုပြီး dangling references (မတည်ငြိမ်သော references) မဖြစ်အောင် ကာကွယ်ပေးပါတယ်။</p>
+<p>ရိုးရှင်းတဲ့ ဥပမာတစ်ခုကို ကြည့်လိုက်ရအောင်:</p>
+<pre class="language-rust"><code>fn main() &#123;
+    let r;
+    &#123;
+        let x = 5;
+        r = &x;
+    &#125;
+    // println!("&#123;&#125;", r); // ဒီအရာကြောင့် compile-time error ဖြစ်နိုင်ပါတယ်
+&#125;
+</code></pre>
+
+<p>ဒီကုဒ်မှာ:</p>
+<ul>
+    <li><code>x</code> ဟာ inner block အဆုံးမှာ scope ထဲကနေ ထွက်သွားပါတယ်။</li>
+    <li><code>r</code> ဟာ <code>x</code> ကို reference လုပ်တာဖြစ်ပေမယ့် <code>x</code> ဟာ inner block ပြီးသွားချိန်မှာ valid မဖြစ်တော့ပါဘူး၊ ဒါကြောင့် <code>r</code> ကို သုံးလိုက်ရင် compile-time error ဖြစ်နိုင်ပါတယ်။</li>
+</ul>
+
+<p>Rust က သင့်လုပ်တဲ့ reference တစ်ခုခုဟာ pointer ရဲ့ data ကို ထာဝရ valid ဖြစ်နေဖို့ သေချာစေရန် လိုအပ်ပါတယ်။</p>
+
+<h3 id="Conclusion">နိဂုံး</h3>
+<p>Ownership, borrowing, နှင့် lifetimes ကို နားလည်ခြင်းက safe နှင့် efficient Rust code ကို ရေးဖို့အတွက် အရေးကြီးပါတယ်။ ဒီစီစဉ်ချက်တွေဟာ အစမှာတော့ ခက်ခဲစိတ်ရှုပ်နိုင်ပေမယ့် လေ့ကျင့်မှုနဲ့အတူ ရိုးရှင်းလာနိုင်ပါတယ်။</p>
+<h3 id="WhatNext">နောက်တစ်ခုက ဘာဖြစ်မလဲ?</h3>
+<p>အခု သင် Rust ရဲ့ ownership system ရဲ့ အခြေခံကို နားလည်သွားပြီဆိုတော့၊ memory safety ကို သေချာအောင်လုပ်ပေးဖို့ borrowing နှင့် lifetimes ဘယ်လို အလုပ်လုပ်သလဲ ဆိုတာကို နက်နက်ရှိုင်းရှိုင်း လေ့လာကြမယ်။</p>
+<a style="color: #99ddff" href="/tutorials/rust/borrowing-and-lifetimes-mm">နောက်သင်ခန်းစာ: Rust ရဲ့ Borrowing နှင့် Lifetimes ကို ရှင်းပြခြင်း</a>
+<p>နောက်သင်ခန်းစာမှာ borrowing နှင့် lifetimes ကို ပိုမိုအသေးစိတ် ရှင်းပြသွားမှာဖြစ်လို့ စောင့်မျှော်လိုက်ပါ။ ကုဒ်ရေးရင်း ပျော်ပါစေ။</p>
+        </div>
+    </article>
+</Layout>
+</html>

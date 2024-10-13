@@ -1,0 +1,189 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import "../../../styles/blog.css";
+// Define the static content for the blog post
+const blogPost = {
+    title: "Rust's Borrowing and Lifetimes Explained",
+    date: "May 21, 2024",
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Learn about Rust's ownership system, a unique feature that ensures memory safety without needing a garbage collector. This tutorial covers the basics with simple examples.">
+        <meta name="keywords" content="Rust, Rust Programming, Rust Tutorial, Ownership System, Memory Safety">
+        <meta property="og:title" content="{blogPost.title}">
+        <meta property="og:description" content="Learn about Rust's ownership system, a unique feature that ensures memory safety without needing a garbage collector. This tutorial covers the basics with simple examples.">
+        <meta property="og:image" content="/rust-ownership-system-cover.png">
+        <meta property="og:url" content="https://yourwebsite.com/tutorials/rust/ownership-system">
+        <meta name="twitter:card" content="summary_large_image">
+        <title>{blogPost.title}</title>
+        <link rel="stylesheet" href="/atom-one-dark.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+        <script defer src="/highlight.min.js"></script>
+        <script src="/scripts/blog.js" defer></script>
+    </head>
+<Layout>
+    <button class="menu-toggle"onclick="toggleMenu()" ><svg class="up-svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_24_7)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.0573 11.0573C15.3074 10.8074 15.6464 10.667 16 10.667C16.3535 10.667 16.6926 10.8074 16.9427 11.0573L24.4853 18.6C24.7282 18.8515 24.8626 19.1883 24.8596 19.5379C24.8565 19.8875 24.7163 20.2219 24.4691 20.4691C24.2219 20.7163 23.8875 20.8565 23.5379 20.8596C23.1883 20.8626 22.8515 20.7282 22.6 20.4853L16 13.8853L9.4 20.4853C9.14853 20.7282 8.81172 20.8626 8.46213 20.8596C8.11253 20.8565 7.77812 20.7163 7.5309 20.4691C7.28369 20.2219 7.14347 19.8875 7.14043 19.5379C7.13739 19.1883 7.27179 18.8515 7.51466 18.6L15.0573 11.0573Z" fill="white"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_24_7">
+        <rect width="32" height="32" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+        </button>
+    <nav class="side-nav">
+        <a href="#Borrowing" onclick="scrollToSection(event, '#Borrowing')">Borrowing</a>
+        <a href="#ImmutableBorrowing" onclick="scrollToSection(event, '#ImmutableBorrowing')">Immutable Borrowing</a>
+        <a href="#MutableBorrowing" onclick="scrollToSection(event, '#MutableBorrowing')">Mutable Borrowing</a>
+        <a href="#Lifetimes" onclick="scrollToSection(event, '#Lifetimes')">Lifetimes</a>
+        <a href="#LifetimeAnnotations" onclick="scrollToSection(event, '#LifetimeAnnotations')">Lifetime Annotations</a>
+        <a href="#PuttingItAllTogether" onclick="scrollToSection(event, '#PuttingItAllTogether')">Putting It All Together</a>
+        <a href="#Conclusion" onclick="scrollToSection(event, '#Conclusion')">Conclusion</a>
+        <a href="#WhatNext" onclick="scrollToSection(event, '#WhatNext')">What's Next?</a>
+    </nav>
+    <article class="blog-post">
+        <h1>{blogPost.title}</h1>
+        <p class="date">{blogPost.date}</p>
+        <div class="author-profile">
+            <img src="/profile.jpeg" alt="Author Photo" class="author-photo">
+            <div>
+                <p class="author-name">Htet Lin Maung</p>
+            </div>
+        </div>
+        <img src="/borrowing-and-lifetimes-cover.png" alt="Rust Programming Concepts" class="blog-image">
+        <div class="content">
+            <p>Borrowing and lifetimes are crucial concepts in Rust, building upon the ownership system you learned in the previous tutorial. They help manage how values are accessed and ensure memory safety. Let's dive deeper into these concepts with simple examples.</p>
+            
+            <h2 id="Borrowing">Borrowing</h2>
+
+            <p>Borrowing allows you to use a value without taking ownership of it. There are two types of borrowing: immutable and mutable.</p>
+
+            <h2 id="ImmutableBorrowing">Immutable Borrowing</h2>
+
+            <p>When you borrow a value immutably, you can read it but not change it. You can have multiple immutable borrows at the same time.</p>
+
+            <pre class="language-rust"><code>fn main() &#123;
+    let s1 = String::from("hello");
+    let s2 = &s1; // immutable borrow
+    let s3 = &s1; // another immutable borrow
+    println!("s1: &#123;&#125;", s1); // s1 is still valid
+    println!("s2: &#123;&#125;", s2); // s2 can access the value
+    println!("s3: &#123;&#125;", s3); // s3 can also access the value
+&#125;</code></pre>
+
+<h2 id="MutableBorrowing">Mutable Borrowing</h2>
+
+<p>When you borrow a value mutably, you can change it, but you can only have one mutable borrow at a time.</p>
+
+<pre class="language-rust"><code>fn main() &#123;
+    let mut s1 = String::from("hello");
+    let s2 = &mut s1; // mutable borrow
+    s2.push_str(", world"); // modify the value
+    println!("s2: &#123;&#125;", s2); // s2 can access and modify the value
+&#125;
+</code></pre>
+
+<p>You cannot have mutable and immutable borrows at the same time:</p>
+
+<pre class="language-rust"><code>fn main() &#123;
+    let mut s1 = String::from("hello");
+    let s2 = &s1; // immutable borrow
+    let s3 = &mut s1; // mutable borrow - error!
+    println!("s2: &#123;&#125;", s2);
+&#125;
+</code></pre>
+
+<p>This will cause a compile-time error because Rust prevents simultaneous mutable and immutable borrows to ensure memory safety.</p>
+
+<h2 id="Lifetimes">Lifetimes</h2>
+
+<p>Lifetimes ensure that references are valid for as long as needed. They prevent dangling references, where a reference points to data that has already been freed.</p>
+
+<p>Let's see a simple example of lifetimes:</p>
+
+<pre class="language-rust"><code>fn main() &#123;
+    let r;
+    &#123;
+        let x = 5;
+        r = &x;
+    &#125;
+    // println!("&#123;&#125;", r); // compile-time error: `x` does not live long enough
+&#125;
+</code></pre>
+
+<p>In this code:</p>
+<ul>
+    <li><code>x</code> is created inside the inner block and goes out of scope at the end of the block.</li>
+    <li><code>r</code> is a reference to <code>x</code>, but <code>x</code> is no longer valid after the block, causing a compile-time error.</li>
+</ul>
+
+<h2 id="LifetimeAnnotations">Lifetime Annotations</h2>
+
+<p>Sometimes, you need to specify lifetimes explicitly using annotations. This is common in functions that take references as parameters and return references.</p>
+
+<pre class="rust-language"><code>fn longest<'a>(x: &'a str, y: &'a str) -> &'a str &#123;
+    if x.len() > y.len() &#123;
+        x
+    &#125; else &#123;
+        y
+    &#125;
+&#125;
+
+fn main() &#123;
+    let string1 = String::from("abcd");
+    let string2 = "xyz";
+    let result = longest(string1.as_str(), string2);
+    println!("The longest string is &#123;&#125;", result);
+&#125;
+</code></pre>
+
+<p>In this code:</p>
+
+<ul>
+    <li><code>'a</code> is a lifetime parameter that tells Rust the references <code>x</code>, <code>y</code>, and the return value all have the same lifetime.</li>
+</ul>
+
+<h2 id="PuttingItAllTogether">Putting It All Together</h2>
+
+<p>To see how ownership, borrowing, and lifetimes work together, let's look at a more comprehensive example:</p>
+
+<pre class="language-rust"><code>fn calculate_length(s: &String) -> usize &#123;
+    s.len()
+&#125;
+
+fn main() &#123;
+    let s1 = String::from("hello");
+    let length = calculate_length(&s1); // immutable borrow
+    println!("The length of '&#123;&#125;' is &#123;&#125;", s1, length); // s1 is still valid
+&#125;
+</code></pre>
+
+<p>In this code:</p>
+
+<ul>
+    <li>The <code>calculate_length</code> function borrows <code>s1</code> immutably.</li>
+    <li><code>s1</code> remains valid after the function call, demonstrating how borrowing allows functions to access data without taking ownership.</li>
+</ul>
+
+<h2 id="Conclusion">Conclusion</h2>
+
+<p>Understanding borrowing and lifetimes is essential for writing safe and efficient Rust code. These concepts ensure that references are valid and prevent memory errors. While they may seem complex at first, they become more intuitive with practice.</p>
+
+<h2 id="WhatNext">What's Next?</h2>
+
+<p>Now that you understand borrowing and lifetimes, you'll be better prepared to handle more advanced Rust concepts. In the next tutorial, we'll explore how to handle errors in Rust using the Result and Option types.</p>
+
+<a style="color: #99ddff" href="/tutorials/rust/error-handling">Next Tutorial: Error Handling in Rust: Result and Option Types</a>
+
+<p>Stay tuned for the next tutorial! Happy coding!</p>
+        </div>
+    </article>
+</Layout>
+</html>

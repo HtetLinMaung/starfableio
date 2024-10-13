@@ -1,0 +1,46 @@
+---
+import "../styles/layout.css";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <title><slot name="title">Default Title</slot></title> -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Standard favicon -->
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+
+    <!-- For browsers that support different sizes -->
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+
+    <!-- Apple Touch Icon for iOS devices -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+    <!-- Manifest (optional, if you have a web app manifest file) -->
+    <link rel="manifest" href="/site.webmanifest" />
+  </head>
+  <body>
+    <header class="main-header">
+      <div>StarFable</div>
+      <nav>
+        <!-- <a href="/blogs">Blogs</a>
+        <a href="/tutorials">Tutorials</a> -->
+        <!-- <a href="/about" style="color: #9df; text-decoration: none; margin: 0 15px;">About</a>
+            <a href="/contact" style="color: #9df; text-decoration: none; margin: 0 15px;">Contact</a> -->
+        <span id="svg-span"></span>
+      </nav>
+      <script defer src="/scripts/layout.js"></script>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <!-- <footer style="background-color: #333; color: #fff; text-align: center; padding: 20px;">
+        © 2024 Your Website Name. All rights reserved.
+    </footer> -->
+  </body>
+</html>

@@ -1,0 +1,314 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/blog.css";
+import CodeContainer from "../../components/CodeContainer.astro";
+// Define the static content for the blog post
+const blogPost = {
+  title: "Why Rust Stands Out: A Fresh Take on Memory Safety 🚀🦀",
+  date: "Oct 11, 2024",
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{blogPost.title}</title>
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="A fresh take on why Rust stands out for memory safety and how it can help developers avoid common pitfalls of manual memory management."
+    />
+    <meta
+      name="keywords"
+      content="Rust, memory safety, programming, system programming, software development"
+    />
+    <meta name="author" content="Htet Lin Maung" />
+
+    <!-- Open Graph Meta Tags for Social Sharing (Facebook, LinkedIn, etc.) -->
+    <meta
+      property="og:title"
+      content="Why Rust Stands Out: A Fresh Take on Memory Safety 🚀🦀"
+    />
+    <meta
+      property="og:description"
+      content="Explore why Rust's memory safety model is game-changing for modern programming."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://www.starfableio.com/blogs/why-rust-stands-out/index.html"
+    />
+    <meta
+      property="og:image"
+      content="https://www.starfableio.com/why-rust-stands-out.png"
+    />
+    <meta property="og:image:alt" content="Rust Memory Safety" />
+    <meta property="og:site_name" content="Your Blog Name" />
+
+    <!-- Twitter Cards Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Why Rust Stands Out: A Fresh Take on Memory Safety 🚀🦀"
+    />
+    <meta
+      name="twitter:description"
+      content="Discover Rust's unique memory safety model and how it simplifies safe coding."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.starfableio.com/why-rust-stands-out.png"
+    />
+    <meta name="twitter:site" content="@YourTwitterHandle" />
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Why Rust Stands Out: A Fresh Take on Memory Safety",
+        "image": "https://www.starfableio.com/why-rust-stands-out.png",
+        "author": {
+          "@type": "Person",
+          "name": "Htet Lin Maung"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Your Blog Name",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.starfableio.com/logo.png"
+          }
+        },
+        "datePublished": "2024-10-11",
+        "description": "Explore Rust's innovative approach to memory safety, helping developers avoid common memory management bugs."
+      }
+    </script>
+    <link rel="stylesheet" href="/atom-one-dark.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="/scripts/highlight.min.js"></script>
+    <script src="/scripts/blog.js" defer></script>
+  </head>
+  <Layout>
+    <svg
+      onclick="toggleMenu()"
+      class="menu-toggle-svg"
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="24" fill="#1D1E22"></rect>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M34.276 28.6093C34.026 28.8593 33.6869 28.9997 33.3333 28.9997C32.9798 28.9997 32.6407 28.8593 32.3907 28.6093L24 20.2186L15.6093 28.6093C15.3579 28.8522 15.0211 28.9866 14.6715 28.9835C14.3219 28.9805 13.9875 28.8403 13.7403 28.5931C13.493 28.3459 13.3528 28.0114 13.3498 27.6618C13.3467 27.3123 13.4811 26.9755 13.724 26.724L22.1147 18.3333C22.6148 17.8334 23.2929 17.5526 24 17.5526C24.7071 17.5526 25.3853 17.8334 25.8853 18.3333L34.276 26.724C34.526 26.974 34.6664 27.3131 34.6664 27.6666C34.6664 28.0202 34.526 28.3593 34.276 28.6093Z"
+        fill="white"></path>
+    </svg>
+
+    <nav class="side-nav">
+      <a
+        href="#what-is-memory-safety"
+        onclick="scrollToSection(event, '#what-is-memory-safety')"
+        >What Is Memory Safety?</a
+      >
+      <a
+        href="#ownership-the-key-to-rust-memory-safety"
+        onclick="scrollToSection(event, '#ownership-the-key-to-rust-memory-safety')"
+        >Ownership: The Key to Rust’s Memory Safety</a
+      >
+      <a
+        href="#borrowing-and-lifetimes-sharing-with-limits"
+        onclick="scrollToSection(event, '#borrowing-and-lifetimes-sharing-with-limits')"
+        >Borrowing and Lifetimes: Sharing with Limits</a
+      >
+      <a
+        href="#why-rust-memory-safety-is-game-changing"
+        onclick="scrollToSection(event, '#why-rust-memory-safety-is-game-changing')"
+        >Why Rust’s Memory Safety is Game-Changing</a
+      >
+      <a
+        href="#final-thoughts"
+        onclick="scrollToSection(event, '#final-thoughts')">Final Thoughts</a
+      >
+    </nav>
+    <article class="blog-post">
+      <h1>{blogPost.title}</h1>
+      <p class="date">{blogPost.date}</p>
+      <div class="author-profile">
+        <img src="/profile.jpeg" alt="Author Photo" class="author-photo" />
+        <div>
+          <p class="author-name">Htet Lin Maung</p>
+        </div>
+      </div>
+      <img
+        src="/why-rust-stands-out.png"
+        alt="Why Rust Stands Out"
+        class="blog-image"
+      />
+      <div class="content">
+        <p>
+          Rust has gained a lot of attention lately, especially for how it
+          handles memory safety. But what does that really mean, and why does it
+          matter? In this post, I’ll walk you through Rust’s unique approach to
+          managing memory in a way that’s clear, simple, and—dare I say—fun to
+          explore. You won’t find any intimidating jargon here, just the
+          essentials to help you appreciate why Rust is special.
+        </p>
+
+        <h2 id="what-is-memory-safety">What Is Memory Safety? 🛡️</h2>
+        <p>
+          Let’s start with the basics. When we talk about “memory safety,” we’re
+          essentially talking about how a programming language handles
+          memory—where your data lives while your program is running. In
+          languages like C or C++, developers have a lot of control over memory,
+          but with that control comes responsibility. Mishandling memory can
+          lead to bugs like buffer overflows or use-after-free 🐛, which can
+          crash your program or create vulnerabilities.
+        </p>
+
+        <p>
+          Rust approaches this differently. It gives you fine-grained control
+          over memory without making you worry about the common pitfalls of
+          manual memory management. How? By enforcing rules that make sure your
+          code plays it safe. 🧠🔒
+        </p>
+
+        <h2 id="ownership-the-key-to-rust-memory-safety">
+          Ownership: The Key to Rust’s Memory Safety 🔑
+        </h2>
+        <p>
+          The magic starts with Rust’s `ownership` system. Every value in Rust
+          has a single owner—like a personal bodyguard for your data. When the
+          owner goes out of scope, the data is automatically cleaned up. Here's
+          a simple example:
+        </p>
+
+        <CodeContainer>
+          <pre
+            class="language-rust"><code>fn main() &#123;
+    let s = String::from("hello");  // s comes into scope
+    takes_ownership(s);             // s is moved into the function
+    // s is no longer valid here
+
+    let x = 5;                      // x comes into scope
+    makes_copy(x);                  // x is copied into the function
+    // x is still valid here
+&#125;
+
+fn takes_ownership(some_string: String) &#123;
+    println!("&#123;some_string&#125;");
+    // some_string is dropped here
+&#125;
+
+fn makes_copy(some_integer: i32) &#123;
+    println!("&#123;some_integer&#125;");
+&#125;</code></pre>
+        </CodeContainer>
+
+        <p>
+          In this example, when the string `s` is passed to `takes_ownership`,
+          ownership is transferred to the function. After that, `s` is no longer
+          valid in main. Meanwhile, integers like `x` (which implement the
+          `Copy` trait) don't transfer ownership—they’re simply copied. 🧳✨
+        </p>
+
+        <h2 id="borrowing-and-lifetimes-sharing-with-limits">
+          Borrowing and Lifetimes: Sharing with Limits 🤝
+        </h2>
+        <p>
+          But what if you need to share data? Rust allows borrowing, which lets
+          you pass references to a value without transferring ownership. Here's
+          an example:
+        </p>
+        <CodeContainer>
+          <pre
+            class="language-rust"><code>fn main() &#123;
+    let s1 = String::from("hello");
+    let len = calculate_length(&s1);  // We borrow s1, no ownership is transferred
+    println!("The length of '&#123;s1&#125;' is &#123;len&#125;");  // s1 is still valid here
+&#125;
+
+fn calculate_length(s: &String) -> usize &#123;
+    s.len()  // We can use s without taking ownership
+&#125;</code></pre>
+        </CodeContainer>
+
+        <p>
+          Here, `s1` is borrowed by `calculate_length`, but its ownership stays
+          in `main`. This allows `s1` to be reused after the function call,
+          ensuring safe memory access while preventing unnecessary data copying.
+        </p>
+
+        <p>
+          Now, Rust ensures that borrowed references don’t outlive their owner.
+          This is where lifetimes come in. Don’t worry, lifetimes are just a way
+          of keeping borrowed references in check. 🕰️
+        </p>
+
+        <CodeContainer>
+          <pre
+            class="language-rust"><code>fn longest&lt;'a&gt;(x: &'a str, y: &'a str) -&gt; &'a str &#123;
+    if x.len() > y.len() &#123;
+        x
+    &#125; else &#123;
+        y
+    &#125;
+&#125;
+
+            
+fn main() &#123;
+    let string1 = String::from("long string is long");
+    let string2 = "short";
+            
+    let result = longest(&string1, &string2);
+    println!("The longest string is &#123;result&#125;");
+&#125;</code></pre>
+        </CodeContainer>
+
+        <p>
+          Here, the lifetime `'a` ensures that `x` and `y` are valid for the
+          same period. Rust's compiler makes sure that these rules are
+          respected, preventing dangling references. 📏
+        </p>
+        <h2 id="why-rust-memory-safety-is-game-changing">
+          Why Rust’s Memory Safety is Game-Changing 🎮
+        </h2>
+        <p>
+          Rust helps prevent common errors that plague other systems programming
+          languages without relying on a garbage collector. You get the best of
+          both worlds: the performance control of C/C++ with the safety features
+          you’d expect from languages like Python or Java. 🎯
+        </p>
+
+        <p>
+          By enforcing these strict rules, Rust frees you up to focus on solving
+          problems instead of worrying about low-level memory bugs. Once you
+          understand ownership, borrowing, and lifetimes, it feels like the
+          language is working with you, not against you. 🤝
+        </p>
+
+        <h2 id="final-thoughts">Final Thoughts 💡</h2>
+        <p>
+          Rust’s approach to memory safety is a game-changer in the world of
+          programming languages. It gives you the power and control of systems
+          languages without the headaches. Whether you’re building web
+          applications, command-line tools, or even game engines, Rust ensures
+          that your code is robust and reliable. 💪
+        </p>
+
+        <p>
+          So, if you’ve been hesitant to try Rust because of all the memory
+          safety talk, take it step by step. Rust’s unique approach might just
+          make it the most exciting language to learn right now! 🎉
+        </p>
+      </div>
+    </article>
+  </Layout>
+</html>

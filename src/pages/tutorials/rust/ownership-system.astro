@@ -1,0 +1,142 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import "../../../styles/blog.css";
+// Define the static content for the blog post
+const blogPost = {
+    title: "Understanding Rust's Ownership System",
+    date: "May 16, 2024",
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Learn about Rust's ownership system, a unique feature that ensures memory safety without needing a garbage collector. This tutorial covers the basics with simple examples.">
+        <meta name="keywords" content="Rust, Rust Programming, Rust Tutorial, Ownership System, Memory Safety">
+        <meta property="og:title" content="{blogPost.title}">
+        <meta property="og:description" content="Learn about Rust's ownership system, a unique feature that ensures memory safety without needing a garbage collector. This tutorial covers the basics with simple examples.">
+        <meta property="og:image" content="/rust-ownership-system-cover.png">
+        <meta property="og:url" content="https://yourwebsite.com/tutorials/rust/ownership-system">
+        <meta name="twitter:card" content="summary_large_image">
+        <title>{blogPost.title}</title>
+        <link rel="stylesheet" href="/atom-one-dark.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+        <script defer src="/highlight.min.js"></script>
+        <script src="/scripts/blog.js" defer></script>
+    </head>
+<Layout>
+    <button class="menu-toggle"onclick="toggleMenu()" ><svg class="up-svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_24_7)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.0573 11.0573C15.3074 10.8074 15.6464 10.667 16 10.667C16.3535 10.667 16.6926 10.8074 16.9427 11.0573L24.4853 18.6C24.7282 18.8515 24.8626 19.1883 24.8596 19.5379C24.8565 19.8875 24.7163 20.2219 24.4691 20.4691C24.2219 20.7163 23.8875 20.8565 23.5379 20.8596C23.1883 20.8626 22.8515 20.7282 22.6 20.4853L16 13.8853L9.4 20.4853C9.14853 20.7282 8.81172 20.8626 8.46213 20.8596C8.11253 20.8565 7.77812 20.7163 7.5309 20.4691C7.28369 20.2219 7.14347 19.8875 7.14043 19.5379C7.13739 19.1883 7.27179 18.8515 7.51466 18.6L15.0573 11.0573Z" fill="white"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_24_7">
+        <rect width="32" height="32" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+        </button>
+    <nav class="side-nav">
+        <a href="#Ownership"onclick="scrollToSection(event, '#Ownership')">Ownership</a>
+        <a href="#Borrowing" onclick="scrollToSection(event, '#Borrowing')">Borrowing</a>
+        <a href="#Lifetimes" onclick="scrollToSection(event, '#Lifetimes')">Lifetimes</a>
+        <a href="#Conclusion" onclick="scrollToSection(event, '#Conclusion')">Conclusion</a>
+        <a href="#WhatNext" onclick="scrollToSection(event, '#WhatNext')">What's Next?</a>
+    </nav>
+    <article class="blog-post">
+        <h1>{blogPost.title}</h1>
+        <p class="date">{blogPost.date}</p>
+        <div class="author-profile">
+            <img src="/profile.jpeg" alt="Author Photo" class="author-photo">
+            <div>
+                <p class="author-name">Htet Lin Maung</p>
+            </div>
+        </div>
+        <img src="/rust-ownership-system-cover.png" alt="Rust Programming Concepts" class="blog-image">
+        <div class="content">
+            <p>Rust’s ownership system is one of its most unique and powerful features. It helps ensure memory safety without needing a garbage collector. In this tutorial, we'll break down the basics of Rust's ownership system with simple examples.</p>
+            <p><b>Key Concepts</b></p>
+            <ol>
+                <li><b>Ownership</b></li>
+                <li><b>Borrowing</b></li>
+                <li><b>Lifetimes</b></li>
+            </ol>
+
+            <h2 id="Ownership">Ownership</h2>
+
+            <p>In Rust, every value has a single owner. When the owner goes out of scope, the value is dropped (i.e., memory is freed).</p>
+
+            <p>Let's look at an example:</p>
+
+            <pre class="language-rust"><code>fn main() &#123;
+    let s1 = String::from("hello");
+    let s2 = s1; // s1 is now invalid, s2 is the new owner of the value
+    // println!("&#123;&#125;", s1); // This would cause a compile-time error
+    println!("&#123;&#125;", s2);
+&#125;</code></pre>
+            <p>In this code:</p>
+            <ul>
+                <li><code>s1</code> owns the string <code>"hello"</code>.</li>
+                <li>When we assign <code>s1</code> to <code>s2</code>, <code>s1</code> no longer owns the string. <code>s2</code> becomes the new owner.</li>
+                <li>If we try to use <code>s1</code> after this, it will cause a compile-time error because <code>s1</code> is no longer valid.</li>
+            </ul>
+
+            <h2 id="Borrowing">Borrowing</h2>
+            <p>Sometimes, you need to let multiple parts of your code access a value without transferring ownership. This is where borrowing comes in. You can borrow a value immutably (without changing it) or mutably (with the ability to change it).</p>
+
+            <h3>Immutable Borrowing</h3>
+            <pre class="language-rust"><code>fn main() &#123;
+    let s1 = String::from("hello");
+    let s2 = &s1; // borrow s1 immutably
+    println!("&#123;&#125;", s1); // s1 is still valid
+    println!("&#123;&#125;", s2); // s2 can access the value
+&#125;</code></pre>
+
+            <h3>Mutable Borrowing</h3>
+            <pre class="language-rust"><code>fn main() &#123;
+    let mut s1 = String::from("hello");
+    let s2 = &mut s1; // borrow s1 mutably
+    s2.push_str(", world"); // modify the value
+    println!("&#123;}", s2);
+&#125;</code></pre>
+
+<p>In this code:</p>
+<ul>
+    <li>You can have multiple immutable references (<code>&s1</code>), but only one mutable reference (<code>&mut s1</code>) at a time.</li>
+    <li>You cannot have a mutable reference while immutable references exist.</li>
+</ul>
+
+<h3 id="Lifetimes">Lifetimes</h3>
+<p>Lifetimes ensure that references are valid as long as you need them to be. Rust uses lifetimes to prevent dangling references.</p>
+<p>Let's look at a simple example:</p>
+<pre class="language-rust"><code>fn main() &#123;
+    let r;
+    &#123;
+        let x = 5;
+        r = &x;
+    &#125;
+    // println!("&#123;&#125;", r); // This would cause a compile-time error
+&#125;
+</code></pre>
+
+<p>In this code:</p>
+<ul>
+    <li><code>x</code> goes out of scope at the end of the inner block.</li>
+    <li><code>r</code> is a reference to <code>x</code>, but <code>x</code> is no longer valid after the inner block, so using <code>r</code> would cause a compile-time error.</li>
+</ul>
+
+<p>Rust requires us to ensure that any reference we create cannot outlive the data it points to.</p>
+
+<h3 id="Conclusion">Conclusion</h3>
+<p>Understanding ownership, borrowing, and lifetimes is crucial to writing safe and efficient Rust code. These concepts might seem tricky at first, but they become intuitive with practice.</p>
+
+<h3 id="WhatNext">What's Next?</h3>
+<p>Now that you understand the basics of Rust's ownership system, we'll dive deeper into how borrowing and lifetimes work together to ensure memory safety.</p>
+<a style="color: #99ddff" href="/tutorials/rust/borrowing-and-lifetimes">Next Tutorial: Rust's Borrowing and Lifetimes Explained</a>
+<p>Stay tuned for the next tutorial where we'll explore borrowing and lifetimes in more detail. Happy coding!</p>
+        </div>
+    </article>
+</Layout>
+</html>

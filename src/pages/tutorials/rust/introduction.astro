@@ -1,0 +1,112 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import "../../../styles/blog.css";
+// Define the static content for the blog post
+const blogPost = {
+    title: "Introduction to Rust: Your First Rust Program",
+    date: "May 15, 2024",
+};
+---
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Learn how to create your first Rust program with this easy-to-follow tutorial. Perfect for beginners!">
+        <meta name="keywords" content="Rust, Rust programming, Rust tutorial, first Rust program, beginner Rust">
+        <meta property="og:title" content="{blogPost.title}">
+        <meta property="og:description" content="Learn how to create your first Rust program with this easy-to-follow tutorial. Perfect for beginners!">
+        <meta property="og:image" content="/rust-introduction-cover.png">
+        <meta property="og:url" content="https://starfable.io/tutorials/rust/introduction">
+        <meta name="twitter:card" content="summary_large_image">
+        <title>{blogPost.title}</title>
+        <link rel="stylesheet" href="/atom-one-dark.min.css">
+        <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap" rel="stylesheet">
+        <script defer src="/highlight.min.js"></script>
+        <script src="/scripts/blog.js" defer />
+    </head>
+<Layout>
+    <button class="menu-toggle"onclick="toggleMenu()" ><svg class="up-svg" width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <g clip-path="url(#clip0_24_7)">
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M15.0573 11.0573C15.3074 10.8074 15.6464 10.667 16 10.667C16.3535 10.667 16.6926 10.8074 16.9427 11.0573L24.4853 18.6C24.7282 18.8515 24.8626 19.1883 24.8596 19.5379C24.8565 19.8875 24.7163 20.2219 24.4691 20.4691C24.2219 20.7163 23.8875 20.8565 23.5379 20.8596C23.1883 20.8626 22.8515 20.7282 22.6 20.4853L16 13.8853L9.4 20.4853C9.14853 20.7282 8.81172 20.8626 8.46213 20.8596C8.11253 20.8565 7.77812 20.7163 7.5309 20.4691C7.28369 20.2219 7.14347 19.8875 7.14043 19.5379C7.13739 19.1883 7.27179 18.8515 7.51466 18.6L15.0573 11.0573Z" fill="white"/>
+        </g>
+        <defs>
+        <clipPath id="clip0_24_7">
+        <rect width="32" height="32" fill="white"/>
+        </clipPath>
+        </defs>
+        </svg>
+        </button>
+    <nav class="side-nav">
+        <a href="#WhatYouNeed"onclick="scrollToSection(event, '#WhatYouNeed')">What You Need</a>
+        <a href="#SettingUpYourProject" onclick="scrollToSection(event, '#SettingUpYourProject')">Step 1: Setting Up Your Project</a>
+        <a href="#SettingUpYourProject" onclick="scrollToSection(event, '#WritingYourFirstProgram')">Step 2: Writing Your First Program</a>
+        <a href="#RunningYourProgram" onclick="scrollToSection(event, '#RunningYourProgram')">Step 3: Running Your Program</a>
+        <a href="#WhatNext" onclick="scrollToSection(event, '#WhatNext')">What's Next?</a>
+    </nav>
+    <article class="blog-post">
+        <h1>{blogPost.title}</h1>
+        <p class="date">{blogPost.date}</p>
+        <div class="author-profile">
+            <img src="/profile.jpeg" alt="Author Photo" class="author-photo">
+            <div>
+                <p class="author-name">Htet Lin Maung</p>
+            </div>
+        </div>
+        <img src="/rust-introduction-cover.png" alt="Rust Programming Concepts" class="blog-image">
+        <div class="content">
+            <p>Welcome to Rust! In this tutorial, we'll walk you through creating your first Rust program. By the end, you'll have a simple program up and running.</p>
+
+            <h2 id="WhatYouNeed">What You Need</h2>
+            <ol>
+                <li><b>Rust Installed</b>: If you haven't installed Rust yet, visit <a style="color: #99ddff" href="https://www.rust-lang.org/">rust-lang.org</a> and follow the installation instructions.</li>
+                <li><b>A Text Editor</b>: You can use any text editor you like. Visual Studio Code, Sublime Text, or even Notepad will do.</li>
+            </ol>
+
+            <h2 id="SettingUpYourProject">Step 1: Setting Up Your Project</h2>
+<p>First, open your terminal (Command Prompt, PowerShell, or a terminal emulator on Linux/Mac). Create a new directory for your project and navigate into it:</p>
+            <pre class="language-bash"><code>mkdir my_first_rust_program
+cd my_first_rust_program</code></pre>
+            <p>Next, initialize a new Rust project with Cargo, Rust's package manager:</p>
+
+            <pre class="language-bash"><code>cargo new hello_world
+cd hello_world</code></pre>
+
+<p>Cargo creates a new directory named <code>hello_world</code> with some files inside. Navigate into this directory.</p>
+
+<h2 id="WritingYourFirstProgram">Step 2: Writing Your First Program</h2>
+<p>Open the <code>src/main.rs</code> file in your text editor. You'll see some starter code:</p>
+<pre class="language-rust"><code>fn main() &#123;
+    println!("Hello, world!");
+&#125;
+</code></pre>
+<p>This is your first Rust program! Let's break it down:</p>
+<ul>
+    <li><code>fn main() &#123; ... &#125;</code>: This defines the main function, which is the entry point of every Rust program.</li>
+    <li><code>println!("Hello, world!");</code>: This prints "Hello, world!" to the console. The println! macro is used to print text.</li>
+</ul>
+        </div>
+
+        <h2 id="RunningYourProgram">Step 3: Running Your Program</h2>
+        <p>Go back to your terminal and run the following command:</p>
+<pre class="language-bash"><code>cargo run</code></pre>
+<p>You should see the output:</p>
+<pre><code>Compiling hello_world v0.1.0 (path\to\your\project)
+ Finished dev [unoptimized + debuginfo] target(s) in 1.34s
+  Running `target\debug\hello_world.exe`
+Hello, world!
+</code></pre>
+<p>Congratulations! You've just written and run your first Rust program.</p>
+<h2 id="WhatNext">What's Next?</h2>
+<p>Now that you've got the basics, try changing the text inside <code>println!</code> to something else, like:</p>
+<pre class="language-rust"><code>fn main() &#123;
+    println!("Hello, Rust!");
+&#125;
+</code></pre>
+<p>Run <code>cargo run</code> again and see the new output. This is just the beginning of your Rust journey. Keep experimenting and have fun!</p>
+<p>In the next tutorial, we'll dive into <a style="color: #99ddff" href="/tutorials/rust/ownership-system">Understanding Rust's Ownership System</a>. Happy coding!</p>
+</div>
+    </article>
+</Layout>
+</html>
