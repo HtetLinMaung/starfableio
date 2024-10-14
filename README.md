@@ -1,54 +1,100 @@
-# Astro Starter Kit: Basics
+# StarfableIO
 
-```sh
-npm create astro@latest -- --template basics
+StarfableIO is a blog and tutorial website written in [Astro.js](https://astro.build/), focusing on providing engaging and educational content.
+
+## Features
+
+- **Astro.js** for fast and modern web development
+- **Cypress** for end-to-end testing
+- **Terraform** for infrastructure as code, deploying to AWS
+
+## Getting Started
+
+### Prerequisites
+
+Ensure you have the following installed:
+
+- Node.js (v20.17.0+)
+- npm (v10.8.2+)
+- Terraform (v1.9.7+)
+- rustc (v1.80.0+)
+
+### Installation
+
+Clone the repository and install the dependencies:
+
+```bash
+git clone https://github.com/HtetLinMaung/starfableio.git
+cd starfableio
+npm install
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## Running in Development
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+To start the project in development mode:
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
+```bash
+npm run dev
 ```
 
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
+This command starts a local development server and watches for file changes.
 
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
+## Building for Production
 
-Any static assets, like images, can be placed in the `public/` directory.
+To build the project for deployment:
 
-## 🧞 Commands
+```bash
+npm run build
+```
 
-All commands are run from the root of the project, from a terminal:
+This will create an optimized build of Astro.js website, ready for deployment.
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+## End-to-End Testing
 
-## 👀 Want to learn more?
+To run Cypress tests:
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```bash
+npm run cy:open
+```
+
+This will open the Cypress test runner for running end-to-end tests. You can add new tests under the cypress/e2e folder.
+
+Example simple test written in TypeScript:
+
+```ts
+describe("Homepage Test", () => {
+  it("should visit the homepage", () => {
+    cy.visit("/");
+    cy.contains("Welcome to StarfableIO");
+  });
+});
+```
+
+## Deploying with Terraform
+
+After building the project, you can deploy it to AWS using Terraform:
+
+1. Navigate to the infrastructure folder:
+
+```bash
+cd infrastructure
+```
+
+2. Apply the Terraform plan:
+
+```bash
+terraform apply
+```
+
+Make sure your AWS credentials are properly configured.
+
+## Folder Structure
+
+- src/ - Source code for the Astro.js project
+- public/ - Static assets
+- cypress/ - End-to-end tests
+- infrastructure/ - Terraform scripts for deployment
+
+## Contributing
+
+Feel free to submit issues or pull requests. Contributions are welcome!

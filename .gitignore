@@ -1,26 +1,48 @@
-# build output
+# Build output
 dist/
 
-# generated types
+# Generated types
 .astro/
 
-# dependencies
+# Dependencies
 node_modules/
 
-# logs
+# Logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
 
-# environment variables
+# Environment variables
 .env
 .env.production
 
 # macOS-specific files
 .DS_Store
 
-# jetbrains setting folder
+# JetBrains setting folder
 .idea/
-.terraform
+
+# Local Terraform directories and files
+.terraform/
+
+# Terraform state files
+terraform.tfstate
+terraform.tfstate.backup
+
+# Crash log
+crash.log
+
+# Terraform plan files
+*.tfplan
+
+# Terraform lock file (optional)
 .terraform.lock.hcl
+
+
+# Cypress test artifacts
+cypress/screenshots/
+cypress/videos/
+
+# Build artifacts
+out/
