@@ -76,15 +76,21 @@ After building the project, you can deploy it to AWS using Terraform:
 
 1. Navigate to the infrastructure folder:
 
-```bash
-cd infrastructure
-```
+   ```bash
+   cd infrastructure
+   ```
 
-2. Apply the Terraform plan:
+2. Initialize Terraform (only needed the first time or when updating providers/backends):
 
-```bash
-terraform apply
-```
+   ```bash
+   terraform init
+   ```
+
+3. Apply the Terraform plan to deploy:
+
+   ```bash
+   terraform apply
+   ```
 
 Make sure your AWS credentials are properly configured.
 
