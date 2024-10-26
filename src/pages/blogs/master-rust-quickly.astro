@@ -1,0 +1,1250 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/blog.css";
+import CodeContainer from "../../components/CodeContainer.astro";
+// Define the static content for the blog post
+const blogPost = {
+  title: "🚀 Master Rust Quickly: Key Features You Need to Know 🦀",
+  date: "Oct 26, 2024",
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{blogPost.title}</title>
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Master Rust quickly with this fun, fast-paced guide to key Rust features like ownership, borrowing, structs, enums, concurrency, and more. Perfect for experienced developers looking to dive into Rust!"
+    />
+    <meta
+      name="keywords"
+      content="Rust, Rust programming, Rust tutorials, ownership, borrowing, system programming, software development, concurrency, memory safety"
+    />
+    <meta name="author" content="Htet Lin Maung" />
+
+    <!-- Open Graph Meta Tags for Social Sharing (Facebook, LinkedIn, etc.) -->
+    <meta
+      property="og:title"
+      content="Master Rust Quickly: Key Features You Need to Know 🚀🦀"
+    />
+    <meta
+      property="og:description"
+      content="Master Rust's essential features like ownership, borrowing, concurrency, and more. A quick guide for experienced developers to get started with Rust!"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://www.starfableio.com/blogs/master-rust-quickly/index.html"
+    />
+    <meta
+      property="og:image"
+      content="https://www.starfableio.com/master-rust-quickly.png"
+    />
+    <meta property="og:image:alt" content="Master Rust Quickly" />
+    <meta property="og:site_name" content="StarFableIO" />
+
+    <!-- Twitter Cards Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Master Rust Quickly: Key Features You Need to Know 🚀🦀"
+    />
+    <meta
+      name="twitter:description"
+      content="Learn Rust fast with this guide to its key features, from ownership to concurrency, tailored for experienced developers."
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.starfableio.com/master-rust-quickly.png"
+    />
+    <meta name="twitter:site" content="@YourTwitterHandle" />
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Master Rust Quickly: Key Features You Need to Know",
+        "image": "https://www.starfableio.com/master-rust-quickly.png",
+        "author": {
+          "@type": "Person",
+          "name": "Htet Lin Maung"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "StarFableIO",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.starfableio.com/logo.png"
+          }
+        },
+        "datePublished": "2024-10-11",
+        "description": "Master Rust's essential features quickly, including ownership, borrowing, concurrency, and more, for experienced developers."
+      }
+    </script>
+    <link rel="stylesheet" href="/atom-one-dark.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="/scripts/highlight.min.js"></script>
+    <script src="/scripts/blog.js" defer></script>
+  </head>
+  <Layout>
+    <svg
+      onclick="toggleMenu()"
+      class="menu-toggle-svg"
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="24" fill="#1D1E22"></rect>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M34.276 28.6093C34.026 28.8593 33.6869 28.9997 33.3333 28.9997C32.9798 28.9997 32.6407 28.8593 32.3907 28.6093L24 20.2186L15.6093 28.6093C15.3579 28.8522 15.0211 28.9866 14.6715 28.9835C14.3219 28.9805 13.9875 28.8403 13.7403 28.5931C13.493 28.3459 13.3528 28.0114 13.3498 27.6618C13.3467 27.3123 13.4811 26.9755 13.724 26.724L22.1147 18.3333C22.6148 17.8334 23.2929 17.5526 24 17.5526C24.7071 17.5526 25.3853 17.8334 25.8853 18.3333L34.276 26.724C34.526 26.974 34.6664 27.3131 34.6664 27.6666C34.6664 28.0202 34.526 28.3593 34.276 28.6093Z"
+        fill="white"></path>
+    </svg>
+
+    <nav class="side-nav">
+      <a href="#variable" onclick="scrollToSection(event, '#variable')"
+        >Variable</a
+      >
+      <a href="#constants" onclick="scrollToSection(event, '#constants')"
+        >Constants</a
+      >
+      <a href="#shadowing" onclick="scrollToSection(event, '#shadowing')"
+        >Shadowing</a
+      >
+      <a href="#comments" onclick="scrollToSection(event, '#comments')"
+        >Comments</a
+      >
+      <a href="#functions" onclick="scrollToSection(event, '#functions')"
+        >Functions</a
+      >
+      <a href="#control-flow" onclick="scrollToSection(event, '#control-flow')"
+        >Control Flow</a
+      >
+      <a
+        href="#ownership-and-borrowing"
+        onclick="scrollToSection(event, '#ownership-and-borrowing')"
+        >Ownership and Borrowing</a
+      >
+      <a
+        class="sub"
+        href="#ownership"
+        onclick="scrollToSection(event, '#ownership')">Ownership</a
+      >
+      <a
+        class="sub"
+        href="#borrowing"
+        onclick="scrollToSection(event, '#borrowing')">Borrowing</a
+      >
+      <a
+        class="sub"
+        href="#borrowing-rules"
+        onclick="scrollToSection(event, '#borrowing-rules')">Borrowing Rules</a
+      >
+      <a
+        href="#stack-and-heap"
+        onclick="scrollToSection(event, '#stack-and-heap')">Stack and Heap</a
+      >
+      <a href="#slices" onclick="scrollToSection(event, '#slices')">Slices</a>
+      <a href="#struct" onclick="scrollToSection(event, '#struct')">Struct</a>
+      <a
+        class="sub"
+        href="#defining-and-using-a-regular-struct"
+        onclick="scrollToSection(event, '#defining-and-using-a-regular-struct')"
+        >Defining and Using a Regular Struct</a
+      >
+      <a
+        class="sub"
+        href="#tuple-struct"
+        onclick="scrollToSection(event, '#tuple-struct')">Tuple Struct</a
+      >
+      <a
+        class="sub"
+        href="#unit-struct"
+        onclick="scrollToSection(event, '#unit-struct')">Unit Struct</a
+      >
+      <a
+        class="sub"
+        href="#adding-methods"
+        onclick="scrollToSection(event, '#adding-methods')">Adding Methods</a
+      >
+      <a href="#enum" onclick="scrollToSection(event, '#enum')">Enum</a>
+      <a href="#match" onclick="scrollToSection(event, '#match')">Match</a>
+      <a href="#if-let" onclick="scrollToSection(event, '#if-let')">If Let</a>
+      <a
+        href="#package-crate-module"
+        onclick="scrollToSection(event, '#package-crate-module')"
+        >Package Crate Module</a
+      >
+      <a
+        class="sub"
+        href="#creating-a-project"
+        onclick="scrollToSection(event, '#creating-a-project')"
+        >Creating a Project</a
+      >
+      <a
+        class="sub"
+        href="#defining-modules-in-separate-files"
+        onclick="scrollToSection(event, '#defining-modules-in-separate-files')"
+        >Defining Modules in Separate Files</a
+      >
+      <a
+        class="sub"
+        href="#organizing-code-in-submodules"
+        onclick="scrollToSection(event, '#organizing-code-in-submodules')"
+        >Organizing Code in Submodules</a
+      >
+      <a
+        href="#common-collections"
+        onclick="scrollToSection(event, '#common-collections')"
+        >Common Collections</a
+      >
+      <a href="#generic" onclick="scrollToSection(event, '#generic')">Generic</a
+      >
+      <a href="#traits" onclick="scrollToSection(event, '#traits')">Traits</a>
+      <a href="#lifetime" onclick="scrollToSection(event, '#lifetime')"
+        >Lifetime</a
+      >
+      <a
+        href="#error-handling"
+        onclick="scrollToSection(event, '#error-handling')">Error Handling</a
+      >
+      <a
+        href="#automated-test"
+        onclick="scrollToSection(event, '#automated-test')">Automated Test</a
+      >
+      <a
+        href="#anonymous-function-closure"
+        onclick="scrollToSection(event, '#anonymous-function-closure')"
+        >Anonymous Function Closure</a
+      >
+      <a href="#iterators" onclick="scrollToSection(event, '#iterators')"
+        >Iterators</a
+      >
+      <a
+        href="#smart-pointer"
+        onclick="scrollToSection(event, '#smart-pointer')">Smart Pointer</a
+      >
+      <a
+        href="#dereferencing-smart-pointers"
+        onclick="scrollToSection(event, '#dereferencing-smart-pointers')"
+        >Dereferencing Smart Pointers</a
+      >
+      <a href="#concurrency" onclick="scrollToSection(event, '#concurrency')"
+        >Concurrency</a
+      >
+      <a
+        class="sub"
+        href="#basic-thread-example"
+        onclick="scrollToSection(event, '#basic-thread-example')"
+        >Basic Thread Example</a
+      >
+      <a
+        class="sub"
+        href="#using-arc-atomic-reference-counting"
+        onclick="scrollToSection(event, '#using-arc-atomic-reference-counting')"
+        >Using Arc Atomic Reference Counting</a
+      >
+      <a
+        class="sub"
+        href="#using-mutex-for-safe-mutability-across-threads"
+        onclick="scrollToSection(event, '#using-mutex-for-safe-mutability-across-threads')"
+        >Using Mutex for Safe Mutability Across Threads</a
+      >
+      <a
+        class="sub"
+        href="#message-passing-between-threads"
+        onclick="scrollToSection(event, '#message-passing-between-threads')"
+        >Message Passing Between Threads</a
+      >
+    </nav>
+    <article class="blog-post">
+      <h1>{blogPost.title}</h1>
+      <p class="date">{blogPost.date}</p>
+      <div class="author-profile">
+        <img src="/profile.jpeg" alt="Author Photo" class="author-photo" />
+        <div>
+          <p class="author-name">Htet Lin Maung</p>
+        </div>
+      </div>
+      <img
+        src="/master-rust-quickly.png"
+        alt="Master rust quickly"
+        class="blog-image"
+      />
+
+      <div class="content">
+        <p>
+          Rust is a powerful systems programming language known for its memory
+          safety, speed, and concurrency. But if you’re already experienced in
+          another language, you don’t need to dive deep into every little detail
+          to get started. This guide will introduce you to all the key features
+          of Rust that you need to know in a quick, fun way! 🎉
+        </p>
+        <p>
+          Get ready to master Rust essentials in no time, with code snippets
+          that you can follow along. Let’s dive right in! 💻👇
+        </p>
+        <h2 id="variable">Variable ✨</h2>
+        <p>
+          Variables in Rust are immutable by default, but you can make them
+          mutable if you want to change them. It’s a good habit to keep things
+          constant unless necessary!
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 5; // Immutable
+    let mut y = 10; // Mutable
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="constants">Constants 🚦</h2>
+        <p>
+          Constants are like variables, but they are always immutable and must
+          be explicitly typed. Use them when you need a value that will never
+          change!
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">const MAX_POINTS: u32 = 100;</code></pre>
+        </CodeContainer>
+        <h2 id="shadowing">Shadowing 🕶️</h2>
+        <p>
+          Shadowing allows you to declare a new variable with the same name,
+          giving it a fresh start while keeping your code clean!
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 5;
+    let x = x + 1; // Now x is 6
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="comments">Comments 💬</h2>
+        <p>
+          Comments are your side notes. They won’t run in your program, but
+          they’ll make everything clearer for you and anyone reading your code.
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">// This is a comment</code></pre>
+        </CodeContainer>
+        <h2 id="functions">Functions 🛠️</h2>
+        <p>
+          Functions are the core of Rust programs. They take inputs, perform
+          operations, and return outputs. Easy and powerful!
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn add(a: i32, b: i32) -&gt; i32 &#123;
+    a + b
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="control-flow">Control Flow 🔁</h2>
+        <p>
+          Rust provides all the familiar control flow constructs, but with some
+          added safety and flexibility. Let’s break them down:
+        </p>
+        <ul>
+          <li>
+            <code>If-Else</code>: Rust’s <code>if</code> and <code>else</code> work
+            as you’d expect, checking conditions and executing code accordingly.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 6;
+    if x &gt; 5 &#123;
+        println!("x is greater than 5");
+    &#125; else &#123;
+        println!("x is 5 or less");
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            <code>Loop</code>: Infinite loop until you explicitly <code
+              >break</code
+            > out of it. Useful for running something repeatedly.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let mut counter = 0;
+    loop &#123;
+        counter += 1;
+        if counter == 5 &#123;
+            break;
+        &#125;
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            <code>While</code>: Runs the loop as long as the condition is true.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let mut number = 3;
+    while number != 0 &#123;
+        println!("&#123;number&#125;");
+        number -= 1;
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            <code>For</code>: Rust's <code>for</code> loop is great for iterating
+            over ranges, arrays, and other collections.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    for number in 1..4 &#123;
+        println!("&#123;number&#125;");
+    &#125;
+      
+    let array = [10, 20, 30];
+    for element in array.iter() &#123;
+        println!("Array value: &#123;element&#125;");
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="ownership-and-borrowing">Ownership and Borrowing 🔑</h2>
+        <p>
+          Rust’s memory safety relies on ownership and borrowing. Each value has
+          one owner, and when the owner goes out of scope, the value is dropped
+          (freed from memory).
+        </p>
+        <h3 id="ownership">Ownership</h3>
+        <p>
+          When you assign one variable to another, ownership moves, and the
+          original variable is no longer valid.
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let s = String::from("hello");
+    let s2 = s; // Ownership moves to s2
+    // println!("&#123;s&#125;");  // Error: s is no longer valid
+&#125;</code></pre>
+        </CodeContainer>
+        <h3 id="borrowing">Borrowing</h3>
+        <p>
+          Instead of transferring ownership, you can borrow values using
+          references. Borrowing can be immutable or mutable.
+        </p>
+        <ul>
+          <li>Immutable Borrowing:</li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let s = String::from("hello");
+    let len = calculate_length(&amp;s);  // Borrow s
+    println!("Length: &#123;len&#125;");  // s is still valid
+&#125;
+      
+fn calculate_length(s: &amp;String) -&gt; usize &#123;
+  s.len()  // Borrowed, not owned
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>Mutable Borrowing:</li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let mut s = String::from("hello");
+    change(&amp;mut s);
+    println!("&#123;s&#125;"); // Prints: hello, world
+&#125;
+      
+fn change(some_string: &amp;mut String) &#123;
+    some_string.push_str(", world");
+&#125;</code></pre>
+        </CodeContainer>
+        <h3 id="borrowing-rules">Borrowing Rules</h3>
+        <ul>
+          <li>
+            Only one mutable reference at a time, or many immutable
+            references—but not both.
+          </li>
+          <li>References must always be valid (lifetimes manage this).</li>
+        </ul>
+        <h2 id="stack-and-heap">Stack and Heap 📦</h2>
+        <p>
+          In Rust, memory is managed using two main areas: the stack and the
+          heap.
+        </p>
+        <ul>
+          <li>
+            Stack: Stores data with a fixed size, like integers and booleans.
+            It’s fast because the data is added and removed in a last-in,
+            first-out (LIFO) order.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 5; // Stored on the stack
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            Heap: Used for storing data with dynamic or unknown sizes, like
+            String. Allocating on the heap is slower, but it allows flexibility.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let s = String::from("hello"); // Stored on the heap
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            Stack vs. Heap:
+            <ul>
+              <li>
+                Stack is for simple, fixed-size data that is quick to allocate
+                and free.
+              </li>
+              <li>
+                Heap is for more complex, variable-sized data that requires more
+                flexibility but is slower to manage.
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <h2 id="slices">Slices 🔪</h2>
+        <p>
+          A slice in Rust lets you reference a section of a collection (like an
+          array or string) without owning the data. Slices are useful when you
+          want to work with part of a collection while keeping the original
+          collection intact.
+        </p>
+        <ul>
+          <li>
+            Defining a Slice: Slices use a range of indices to borrow a portion
+            of an array or string.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+  let arr = [1, 2, 3, 4, 5];
+  let slice = &arr[1..4]; // Slice from index 1 to 3
+  println!("&#123;:?&#125;", slice); // Prints: [2, 3, 4]
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            String Slices: Work the same way, letting you borrow part of a
+            string.
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+  let s = String::from("hello world");
+  let hello = &s[0..5]; // Slice "hello"
+  println!("&#123;hello&#125;"); // Prints: hello
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            Why Use Slices? Slices let you work with parts of data without
+            copying or owning it, making your code more efficient and safe.
+          </li>
+        </ul>
+      </div>
+      <h2 id="struct">Struct 🧩</h2>
+      <p>
+        Structs let you bundle data together into custom types. They’re like
+        blueprints for creating objects in other languages, but more flexible.
+        You can also define methods to add functionality to your structs.
+      </p>
+      <h3 id="defining-and-using-a-regular-struct">
+        Defining and Using a Regular Struct
+      </h3>
+      <p>
+        A regular struct defines named fields. Here’s how to create and use a
+        User struct:
+      </p>
+      <ul>
+        <li>Defining a Struct:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct User &#123;
+    name: String,
+    age: u32,
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>Using a Struct:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct User &#123;
+    name: String,
+    age: u32,
+&#125;
+
+fn main() &#123;
+    let user = User &#123;
+        name: String::from("Htet Lin Maung"),
+        age: 16,
+    &#125;;
+    println!("Name: &#123;&#125;, Age: &#123;&#125;", user.name, user.age);
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="tuple-struct">Tuple Struct</h3>
+      <p>
+        A tuple struct looks like a tuple but gives it a name, making it useful
+        when you need a simple struct without named fields.
+      </p>
+      <ul>
+        <li>Defining a Tuple Struct:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct Color(i32, i32, i32);  // Represents RGB values</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>Using a Tuple Struct:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct Color(i32, i32, i32);
+
+fn main() &#123;
+    let red = Color(255, 0, 0);
+    println!("Red: &#123;&#125;, Green: &#123;&#125;, Blue: &#123;&#125;", red.0, red.1, red.2);
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="unit-struct">Unit Struct</h3>
+      <p>
+        A unit struct doesn’t hold any data but can be useful for traits and
+        type-based logic.
+      </p>
+      <ul>
+        <li>Defining a Unit Struct:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct AlwaysEqual;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>Using a Unit Struct:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct AlwaysEqual;
+      
+fn main() &#123;
+    let _eq = AlwaysEqual;
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="adding-methods">Adding Methods</h3>
+      <p>
+        You can implement methods for any struct using impl, which allows you to
+        add behavior to your custom types.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">struct User &#123;
+    name: String,
+    age: u32,
+&#125;
+
+impl User &#123;
+    // Associated function (like a constructor)
+    fn new(name: String, age: u32) -&gt; User &#123;
+        User &#123; name, age &#125;
+    &#125;
+      
+    // A method that takes a reference to self
+    fn greet(&amp;self) &#123;
+        println!("Hello, my name is &#123;&#125;!", self.name);
+    &#125;
+&#125;
+      
+fn main() &#123;
+    let user = User::new(String::from("Htet Lin Maung"), 16);
+    user.greet();  // Outputs: Hello, my name is Htet Lin Maung!
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="enum">Enum 🛣️</h2>
+      <p>
+        Enums let you define multiple possible states for a value. Great for
+        handling situations where something can be one of a few predefined
+        options.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">enum Direction &#123;
+    Up,
+    Down,
+    Left,
+    Right,
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="match">Match 🔄</h2>
+      <p>
+        <code>match</code> is a Rust favorite! It’s a powerful control structure
+        for comparing values against different patterns.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">enum Direction &#123;
+    Up,
+    Down,
+    Left,
+    Right,
+&#125;
+      
+fn main() &#123;
+    let direction = Direction::Up;
+      
+    match direction &#123;
+        Direction::Up =&gt; println!("Going up!"),
+        _ =&gt; println!("Other direction"),
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="if-let">If Let 🧐</h2>
+      <p>
+        When you only care about one possible value of an enum, <code
+          >if let</code
+        > simplifies things by matching a specific pattern.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let optional_value = Some(3);
+      
+    if let Some(x) = optional_value &#123;
+        println!("Found: &#123;x&#125;");
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="package-crate-module">Package, Crate, Module 📦</h2>
+      <p>
+        Rust uses packages, crates, and modules to help organize your code.
+        Packages contain crates, and crates contain modules to split
+        functionality across files.
+      </p>
+      <h3 id="creating-a-project">Creating a Project</h3>
+      <p>
+        Start by creating a new Rust project with <code>cargo</code>. This will
+        set up a new package with a crate by default.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-bash">cargo new my_project</code></pre>
+      </CodeContainer>
+      <h3 id="defining-modules-in-separate-files">
+        Defining Modules in Separate Files
+      </h3>
+      <p>
+        Modules help you organize code into separate files. In <code
+          >main.rs</code
+        >, declare a module that links to another file.
+      </p>
+      <ul>
+        <li>main.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">mod utils;  // Refers to utils.rs
+      
+fn main() &#123;
+    utils::greet();
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>utils.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">pub fn greet() &#123;
+    println!("Hello from utils!");
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="organizing-code-in-submodules">Organizing Code in Submodules</h3>
+      <p>You can create submodules by structuring them in folders.</p>
+      <ul>
+        <li>main.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">mod utils;
+      
+fn main() &#123;
+    utils::math::add(2, 3);
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>utils/mod.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">pub mod math;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>utils/math.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">pub fn add(a: i32, b: i32) -&gt; i32 &#123;
+    a + b
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="common-collections">Common Collections 📚</h2>
+      <ul>
+        <li><code>Vector</code>: Dynamic arrays, easy to resize.</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let mut numbers = vec![1, 2, 3];
+    numbers.push(4);
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li><code>Array</code>: Fixed-size arrays.</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers: [i32; 3] = [1, 2, 3];
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li><code>Tuple</code>: Group different types together.</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let person = ("Htet Lin Maung", 16);
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="generic">Generic 📦</h2>
+      <p>
+        Generics let you create flexible functions and structs that can work
+        with multiple types.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn largest&lt;T: PartialOrd&gt;(list: &amp;[T]) -&gt; &amp;T &#123;
+    list.iter().max().unwrap()
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="traits">Traits 🧑‍🏫</h2>
+      <p>
+        Traits in Rust are like interfaces in other languages. They define
+        shared behavior that multiple types can implement. Here’s how you can
+        use traits in Rust:
+      </p>
+      <ul>
+        <li>
+          <code>Defining a Trait</code>: A trait defines a set of methods that
+          implementing types must provide.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&amp;self);
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Implementing a Trait</code>: You can implement the <code
+            >Greet</code
+          > trait for any type (e.g., <code>Person</code>).
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct Person &#123;
+    name: String,
+&#125;
+      
+impl Greet for Person &#123;
+    fn greet(&amp;self) &#123;
+        println!("Hello, my name is &#123;&#125;!", self.name);
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Using the Trait</code>: Once implemented, you can call the trait
+          method on instances of the type.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct Person &#123;
+    name: String,
+&#124;
+
+impl Greet for Person &#123;
+    fn greet(&self) &#123;
+        println!("မင်္ဂလာပါ ကျွန်တော့်နာမည်က &#123;&#125;ပါ!", self.name);
+    &#125;
+&#125;
+      
+fn main() &#123;
+    let person = Person &#123;
+         name: String::from("Htet Lin Maung"),
+    &#125;;
+    person.greet();  // Outputs: Hello, my name is Htet Lin Maung!
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Traits allow you to define behavior that multiple types can share,
+        keeping your code clean and reusable.
+      </p>
+      <h2 id="lifetime">Lifetime ⏳</h2>
+      <p>
+        Lifetimes ensure that references live as long as they’re needed and no
+        longer. They prevent dangling references that could cause bugs.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str &#123;
+    if x.len() &gt; y.len() &#123;
+        x
+    &#125; else &#123;
+        y
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="error-handling">Error Handling ⚠️</h2>
+      <p>
+        Rust avoids exceptions and prefers using <code>Result</code> and <code
+          >Option</code
+        > types to handle errors. This makes it explicit when something might fail,
+        encouraging you to deal with errors upfront.
+      </p>
+      <ul>
+        <li>
+          <code>Basic Example</code>: Here's how you can handle a simple
+          division operation with <code>Result</code>:
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn divide(a: f64, b: f64) -&gt; Result&lt;f64, String&gt; &#123;
+    if b == 0.0 &#123;
+        Err("Cannot divide by zero".to_string())
+    &#125; else &#123;
+        Ok(a / b)
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Error Propagation with ?</code>: The <code>?</code> operator simplifies
+          error handling by automatically returning the error if it occurs, allowing
+          you to propagate it upwards.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn calculate_division() -&gt; Result&lt;f64, String&gt; &#123;
+    let result = divide(10.0, 0.0)?;  // Propagate the error if division fails
+    Ok(result)
+&#125;
+      
+fn main() &#123;
+    match calculate_division() &#123;
+        Ok(value) =&gt; println!("Result: &#123;value&#125;"),
+        Err(e) =&gt; println!("Error: &#123;e&#125;"),
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        In this example, if the <code>divide</code> function returns an error, it
+        gets passed up to <code>calculate_division</code> automatically, reducing
+        the need for boilerplate code. This keeps your error handling concise and
+        clear!
+      </p>
+      <h2 id="automated-test">Automated Test ✅</h2>
+      <p>
+        Testing is built right into Rust. Just mark functions with <code
+          >#[test]</code
+        > and run <code>cargo test</code> to make sure your code is solid!
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">#[cfg(test)]
+mod tests &#123;
+    #[test]
+    fn it_works() &#123;
+        assert_eq!(2 + 2, 4);
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="anonymous-function-closure">Anonymous Function, Closure 🔒</h2>
+      <p>
+        Closures in Rust are anonymous functions that can capture variables from
+        their environment. They are often used for short, inline functionality
+        and can be treated just like regular functions.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let add_one = |x: i32| x + 1;
+    println!("&#123;&#125;", add_one(5)); // 6
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Closures are flexible and can capture variables from their surrounding
+        scope, allowing them to modify or read those values.
+      </p>
+      <h2 id="iterators">Iterators 🔄</h2>
+      <p>
+        Iterators in Rust provide a powerful way to process sequences of values.
+        You can chain and combine methods like <code>map</code>, <code
+          >filter</code
+        >, and <code>fold</code> to perform functional-style operations on collections.
+      </p>
+      <ul>
+        <li>Iterating Over a Vector:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4, 5];
+      
+    for num in numbers.iter() &#123;
+        println!("&#123;num&#125;"); // Prints each number
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          Using <code>map</code> with a Closure: You can transform collections with
+          <code>map</code> and a closure.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4];
+    let doubled: Vec&lt;i32&gt; = numbers.iter().map(|x| x * 2).collect();
+      
+    println!("&#123;:?&#125;", doubled); // Prints: [2, 4, 6, 8]
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          Filtering with <code>filter</code>: You can filter collections based
+          on conditions.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4, 5];
+    let even_numbers: Vec&lt;i32&gt; = numbers.into_iter().filter(|&amp;x| x % 2 == 0).collect();
+      
+    println!("&#123;:?&#125;", even_numbers); // Prints: [2, 4]
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          Combining with <code>fold</code>: Use <code>fold</code> to combine values
+          into a single result (like summing).
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4];
+    let sum = numbers.iter().fold(0, |acc, &amp;x| acc + x);
+      
+    println!("Sum: &#123;sum&#125;"); // Prints: Sum: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Iterators in Rust are lazy, meaning they do nothing until they’re
+        consumed, making them efficient for working with large datasets or
+        streams.
+      </p>
+      <h2 id="smart-pointer">Smart Pointer 🧠</h2>
+      <p>
+        Smart pointers in Rust provide powerful ways to manage memory
+        efficiently. Here are three commonly used types:
+      </p>
+      <ul>
+        <li>
+          <code>Box</code>: Allows you to store data on the heap instead of the
+          stack. Use <code>Box</code> when you have a large amount of data or when
+          you need recursive types.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let boxed_value = Box::new(10);
+    println!("Boxed value: &#123;boxed_value&#125;"); // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Rc (Reference Counted)</code>: Enables multiple ownership of the
+          same data. Use Rc when you want multiple parts of your program to read
+          the same value, but not modify it.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::rc::Rc;
+      
+fn main() &#123;
+    let a = Rc::new(5);
+    let b = Rc::clone(&amp;a); // b shares ownership of the value in a
+    println!("a: &#123;a&#125;, b: &#123;b&#125;"); // Prints: a: 5, b: 5
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>RefCell</code>: Allows mutable borrowing at runtime, even when
+          the value is immutable. Use <code>RefCell</code> when you need interior
+          mutability, especially when combined with <code>Rc</code>.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::cell::RefCell;
+      
+fn main() &#123;
+    let value = RefCell::new(10);
+    *value.borrow_mut() += 5; // Mutably borrow and modify the value
+    println!("Modified value: &#123;&#125;", value.borrow()); // Prints: 15
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="dereferencing-smart-pointers">Dereferencing Smart Pointers 🛠️</h2>
+      <p>
+        Dereferencing is used to access the value behind a smart pointer. In
+        Rust, you use the <code>*</code> operator to dereference smart pointers like
+        <code>Box</code>, <code>Rc</code>, and <code>RefCell</code>.
+      </p>
+      <ul>
+        <li><code>Dereferencing a Box</code>:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let boxed_value = Box::new(10);
+    println!("Dereferenced Box value: &#123;&#125;", *boxed_value); // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li><code>Dereferencing an Rc</code>:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::rc::Rc;
+      
+fn main() &#123;
+    let a = Rc::new(5);
+    println!("Dereferenced Rc value: &#123;&#125;", *a); // Prints: 5
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li><code>Dereferencing a RefCell</code>:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::cell::RefCell;
+      
+fn main() &#123;
+    let value = RefCell::new(10);
+    println!("Dereferenced RefCell value: &#123;&#125;", *value.borrow()); // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="concurrency">Concurrency ⚡</h2>
+      <p>
+        Rust’s concurrency model is both fast and safe, ensuring high
+        performance without sacrificing memory safety. You can use threads, <code
+          >async/await</code
+        >, and smart pointers like <code>Arc</code> and <code>Mutex</code>, and
+        message passing to share data or communicate between threads.
+      </p>
+      <h3 id="basic-thread-example">Basic Thread Example</h3>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::thread;
+      
+fn main() &#123;
+    let handle = thread::spawn(|| &#123;
+        for i in 1..10 &#123;
+            println!("&#123;i&#125;");
+        &#125;
+    &#125;);
+      
+    handle.join().unwrap();  // Wait for the thread to finish
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="using-arc-atomic-reference-counting">
+        Using Arc (Atomic Reference Counting)
+      </h3>
+      <p>
+        <code>Arc</code> (Atomic Reference Counting) is a thread-safe version of
+        <code>Rc</code>. Use <code>Arc</code> when you need multiple threads to share
+        ownership of the same data.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::sync::Arc;
+use std::thread;
+      
+fn main() &#123;
+    let data = Arc::new(5);
+    let data_clone = Arc::clone(&amp;data);
+      
+    let handle = thread::spawn(move || &#123;
+        println!("Shared data: &#123;data_clone&#125;");  // Access shared data
+    &#125;);
+      
+    handle.join().unwrap();
+    println!("Main thread data: &#123;data&#125;");  // Both threads share the same data
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="using-mutex-for-safe-mutability-across-threads">
+        Using Mutex for Safe Mutability Across Threads
+      </h3>
+      <p>
+        <code>Mutex</code> provides mutual exclusion, allowing only one thread to
+        access the data at a time. This ensures safe mutability across threads.
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::sync::&#123;Arc, Mutex&#125;;
+use std::thread;
+      
+fn main() &#123;
+    let data = Arc::new(Mutex::new(0));  // Shared, mutable data
+      
+    let mut handles = vec![];
+      
+    for _ in 0..10 &#123;
+        let data_clone = Arc::clone(&amp;data);
+        let handle = thread::spawn(move || &#123;
+            let mut num = data_clone.lock().unwrap();  // Lock the mutex
+            *num += 1;  // Safely modify the shared data
+        &#125;);
+        handles.push(handle);
+    &#125;
+      
+    for handle in handles &#123;
+        handle.join().unwrap();
+    &#125;
+      
+    println!("Final value: &#123;&#125;", *data.lock().unwrap());  // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="message-passing-between-threads">
+        Message Passing Between Threads 📬
+      </h3>
+      <p>
+        Rust also provides a way to send messages between threads using
+        channels, allowing you to send data safely without needing shared
+        memory.
+      </p>
+      <ul>
+        <li>
+          Using <code>mpsc</code> (Multiple Producer, Single Consumer) Channels:
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::sync::mpsc;
+use std::thread;
+use std::time::Duration;
+      
+fn main() &#123;
+    let (tx, rx) = mpsc::channel();  // Create a channel
+      
+    thread::spawn(move || &#123;
+        let val = String::from("hello");
+        tx.send(val).unwrap();  // Send a message
+        println!("Sent 'hello' from spawned thread");
+    &#125;);
+      
+    // Receive the message
+    let received = rx.recv().unwrap();
+    println!("Received: &#123;received&#125;");
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Now you’re armed with the key features of Rust in a quick, fun format.
+        Whether you're just starting with Rust or brushing up on the basics,
+        you’re ready to take on your next project! 🦀💻
+      </p>
+    </article>
+  </Layout>
+</html>
