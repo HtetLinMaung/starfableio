@@ -24,6 +24,7 @@ function toggleMenu() {
 }
 
 function scrollToSection(event, id) {
+  localStorage.setItem("stop_on_scroll_highlight", "true");
   event.preventDefault(); // Prevent the default anchor click behavior
 
   const section = document.querySelector(id);
@@ -34,10 +35,57 @@ function scrollToSection(event, id) {
     behavior: "smooth",
   });
   const nav = document.querySelector("nav.side-nav");
-  // console.log(window.innerWidth);
+
   if (window.innerWidth <= 1330) {
-    const svgUp = document.querySelector(".up-svg");
     nav.style.display = "none";
-    svgUp.style.transform = "rotate(180deg)";
+  }
+
+  const prevHeaderId = localStorage.getItem("prev_header_id");
+  if (prevHeaderId) {
+    document
+      .querySelector(`a[href="#${prevHeaderId}"]`)
+      .classList.remove("highlight");
+  }
+
+  const a = document.querySelector(`a[href="${id}"]`);
+  if (a) {
+    a.classList.add("highlight");
+    localStorage.setItem("prev_header_id", id.replace("#", ""));
+  }
+  setTimeout(() => {
+    localStorage.setItem("stop_on_scroll_highlight", "false");
+  }, 1000);
+}
+
+function hightlightOnScrollPosition(headers) {
+  for (const header of headers) {
+    const position = header.getBoundingClientRect().top;
+    if (position >= 0 && position <= 60) {
+      const prevHeaderId = localStorage.getItem("prev_header_id");
+      if (prevHeaderId) {
+        document
+          .querySelector(`a[href="#${prevHeaderId}"]`)
+          .classList.remove("highlight");
+      }
+
+      const a = document.querySelector(`a[href="#${header.id}"]`);
+      if (a) {
+        a.classList.add("highlight");
+        localStorage.setItem("prev_header_id", header.id);
+      }
+    }
+    if (position > window.innerHeight) {
+      document
+        .querySelector(`a[href="#${header.id}"]`)
+        .classList.remove("highlight");
+    }
   }
 }
+
+document.addEventListener("scroll", () => {
+  const shouldStop = localStorage.getItem("stop_on_scroll_highlight");
+  if (shouldStop != "true") {
+    hightlightOnScrollPosition(document.querySelectorAll("h2"));
+    hightlightOnScrollPosition(document.querySelectorAll("h3"));
+  }
+});
