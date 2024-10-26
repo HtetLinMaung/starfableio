@@ -817,7 +817,7 @@ fn main() &#123;
         with multiple types.
       </p>
       <CodeContainer>
-        <pre><code class="language-rust">fn largest&lt;T: PartialOrd&gt;(list: &amp;[T]) -&gt; &amp;T &#123;
+        <pre><code class="language-rust">fn largest&lt;T: Ord&gt;(list: &amp;[T]) -&gt; &amp;T &#123;
     list.iter().max().unwrap()
 &#125;</code></pre>
       </CodeContainer>
@@ -846,7 +846,11 @@ fn main() &#123;
         </li>
       </ul>
       <CodeContainer>
-        <pre><code class="language-rust">struct Person &#123;
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&self);
+&#125;
+
+struct Person &#123;
     name: String,
 &#125;
       
@@ -863,9 +867,13 @@ impl Greet for Person &#123;
         </li>
       </ul>
       <CodeContainer>
-        <pre><code class="language-rust">struct Person &#123;
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&self);
+&#125;
+
+struct Person &#123;
     name: String,
-&#124;
+&#125;
 
 impl Greet for Person &#123;
     fn greet(&self) &#123;
@@ -928,7 +936,15 @@ fn main() &#123;
         </li>
       </ul>
       <CodeContainer>
-        <pre><code class="language-rust">fn calculate_division() -&gt; Result&lt;f64, String&gt; &#123;
+        <pre><code class="language-rust">fn divide(a: f64, b: f64) -&gt; Result&lt;f64, String&gt; &#123;
+    if b == 0.0 &#123;
+        Err("Cannot divide by zero".to_string())
+    &#125; else &#123;
+        Ok(a / b)
+    &#125;
+&#125;
+
+fn calculate_division() -&gt; Result&lt;f64, String&gt; &#123;
     let result = divide(10.0, 0.0)?;  // Propagate the error if division fails
     Ok(result)
 &#125;

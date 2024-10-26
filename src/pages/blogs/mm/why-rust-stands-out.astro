@@ -189,8 +189,7 @@ const blogPost = {
         </p>
 
         <CodeContainer>
-          <pre
-            class="language-rust"><code>fn main() &#123;
+          <pre><code class="language-rust">fn main() &#123;
     let s = String::from("hello");  // s က scope ထဲကို ရောက်လာတယ်
     takes_ownership(s);             // s ကို function ထဲကို ပြောင်းပြီ
     // s ကို ဒီမှာ မသုံးနိုင်တော့ဘူး
@@ -228,8 +227,7 @@ fn makes_copy(some_integer: i32) &#123;
         </p>
 
         <CodeContainer>
-          <pre
-            class="language-rust"><code>fn main() &#123;
+          <pre><code class="language-rust">fn main() &#123;
     let s1 = String::from("hello");
     let len = calculate_length(&s1);  // ဒီမှာ s1 ကို borrow လုပ်တယ်၊ ownership မပြောင်းဘူး
     println!("The length of '&#123;s1&#125;' is &#123;len&#125;");  // s1 ကို ဒီမှာသုံးလို့ရသေးတယ်
@@ -254,8 +252,7 @@ fn calculate_length(s: &String) -> usize &#123;
         </p>
 
         <CodeContainer>
-          <pre
-            class="language-rust"><code>fn longest&lt;'a&gt;(x: &'a str, y: &'a str) -&gt; &'a str &#123;
+          <pre><code class="language-rust">fn longest&lt;'a&gt;(x: &'a str, y: &'a str) -&gt; &'a str &#123;
     if x.len() > y.len() &#123;
         x
     &#125; else &#123;

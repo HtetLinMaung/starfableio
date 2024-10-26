@@ -275,7 +275,7 @@ const blogPost = {
       <div class="author-profile">
         <img src="/profile.jpeg" alt="Author Photo" class="author-photo" />
         <div>
-          <p class="author-name">Htet Lin Maung</p>
+          <p class="author-name">ထက်လင်းမောင်</p>
         </div>
       </div>
       <img
@@ -830,7 +830,7 @@ fn main() &#123;
         နဲ့ structs တွေကို တည်ဆောက်ပေးပါတယ်။
       </p>
       <CodeContainer>
-        <pre><code class="language-rust">fn largest&lt;T: PartialOrd&gt;(list: &amp;[T]) -&gt; &amp;T &#123;
+        <pre><code class="language-rust">fn largest&lt;T: Ord&gt;(list: &amp;[T]) -&gt; &amp;T &#123;
     list.iter().max().unwrap()
 &#125;</code></pre>
       </CodeContainer>
@@ -861,7 +861,11 @@ fn main() &#123;
         </li>
       </ul>
       <CodeContainer>
-        <pre><code class="language-rust">struct Person &#123;
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&self);
+&#125;
+
+struct Person &#123;
     name: String,
 &#125;
       
@@ -878,9 +882,13 @@ impl Greet for Person &#123;
         </li>
       </ul>
       <CodeContainer>
-        <pre><code class="language-rust">struct Person &#123;
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&self);
+&#125;
+
+struct Person &#123;
     name: String,
-&#124;
+&#125;
 
 impl Greet for Person &#123;
     fn greet(&self) &#123;
@@ -944,7 +952,15 @@ fn main() &#123;
         </li>
       </ul>
       <CodeContainer>
-        <pre><code class="language-rust">fn calculate_division() -&gt; Result&lt;f64, String&gt; &#123;
+        <pre><code class="language-rust">fn divide(a: f64, b: f64) -&gt; Result&lt;f64, String&gt; &#123;
+    if b == 0.0 &#123;
+        Err("သုညဖြင့် စား၍မရပါ။".to_string())
+    &#125; else &#123;
+        Ok(a / b)
+    &#125;
+&#125;
+
+fn calculate_division() -&gt; Result&lt;f64, String&gt; &#123;
     let result = divide(10.0, 0.0)?;  // division fails ရင် error ကို propagate လုပ်တယ်
     Ok(result)
 &#125;

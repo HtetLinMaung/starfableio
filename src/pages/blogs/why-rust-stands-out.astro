@@ -191,8 +191,7 @@ const blogPost = {
         </p>
 
         <CodeContainer>
-          <pre
-            class="language-rust"><code>fn main() &#123;
+          <pre><code class="language-rust">fn main() &#123;
     let s = String::from("hello");  // s comes into scope
     takes_ownership(s);             // s is moved into the function
     // s is no longer valid here
@@ -228,8 +227,7 @@ fn makes_copy(some_integer: i32) &#123;
           an example:
         </p>
         <CodeContainer>
-          <pre
-            class="language-rust"><code>fn main() &#123;
+          <pre><code class="language-rust">fn main() &#123;
     let s1 = String::from("hello");
     let len = calculate_length(&s1);  // We borrow s1, no ownership is transferred
     println!("The length of '&#123;s1&#125;' is &#123;len&#125;");  // s1 is still valid here
@@ -253,8 +251,7 @@ fn calculate_length(s: &String) -> usize &#123;
         </p>
 
         <CodeContainer>
-          <pre
-            class="language-rust"><code>fn longest&lt;'a&gt;(x: &'a str, y: &'a str) -&gt; &'a str &#123;
+          <pre><code class="language-rust">fn longest&lt;'a&gt;(x: &'a str, y: &'a str) -&gt; &'a str &#123;
     if x.len() > y.len() &#123;
         x
     &#125; else &#123;
