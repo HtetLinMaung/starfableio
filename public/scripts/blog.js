@@ -42,9 +42,10 @@ function scrollToSection(event, id) {
 
   const prevHeaderId = localStorage.getItem("prev_header_id");
   if (prevHeaderId) {
-    document
-      .querySelector(`a[href="#${prevHeaderId}"]`)
-      .classList.remove("highlight");
+    const prevHeader = document.querySelector(`a[href="#${prevHeaderId}"]`);
+    if (prevHeader) {
+      prevHeader.classList.remove("highlight");
+    }
   }
 
   const a = document.querySelector(`a[href="${id}"]`);
