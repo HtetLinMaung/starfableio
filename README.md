@@ -53,11 +53,21 @@ This will create an optimized build of Astro.js website, ready for deployment.
 
 To run Cypress tests:
 
+### For interactive mode:
+
 ```bash
 npm run cy:open
 ```
 
-This will open the Cypress test runner for running end-to-end tests. You can add new tests under the cypress/e2e folder.
+This will open the Cypress test runner for running end-to-end tests interactively. You can add new tests under the cypress/e2e folder.
+
+### For headless mode:
+
+```bash
+npm run cy:run
+```
+
+This will run Cypress tests in headless mode, which is useful for continuous integration (CI) or automated testing pipelines.
 
 ### 💡 Example simple test (TypeScript):
 
@@ -69,6 +79,8 @@ describe("Homepage Test", () => {
   });
 });
 ```
+
+You can use cy:run for faster, non-interactive test execution, and cy:open when debugging or developing tests interactively.
 
 ## 🌍 Deploying with Terraform
 
