@@ -1,0 +1,1285 @@
+---
+import Layout from "../../../layouts/Layout.astro";
+import "../../../styles/blog.css";
+import CodeContainer from "../../../components/CodeContainer.astro";
+// Define the static content for the blog post
+const blogPost = {
+  title: "🚀 Rust ကို မြန်မြန် ကျွမ်းကျင်နိုင်ဖို့ သိထားသင့်တဲ့ အချက်များ 🦀",
+  date: "အောက်တိုဘာ ၂၆၊ ၂၀၂၄",
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{blogPost.title}</title>
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Experienced developers များအတွက် Rust ရဲ့ essential features များဖြစ်သည့် ownership, borrowing, concurrency အစရှိသည့် အချက်များကို အမြန်လေ့လာနိုင်ရန်လမ်းညွှန်ပါ။"
+    />
+    <meta
+      name="keywords"
+      content="Rust, Rust programming, Rust tutorials, ownership, borrowing, system programming, software development, concurrency, memory safety"
+    />
+    <meta name="author" content="ထက်လင်းမောင်" />
+
+    <!-- Open Graph Meta Tags for Social Sharing (Facebook, LinkedIn, etc.) -->
+    <meta
+      property="og:title"
+      content="Rust ကို မြန်မြန် ကျွမ်းကျင်နိုင်ဖို့ သိထားသင့်တဲ့ အချက်များ 🚀🦀"
+    />
+    <meta
+      property="og:description"
+      content="Experienced developers များအတွက် Rust ရဲ့ essential features များဖြစ်သည့် ownership, borrowing, concurrency အစရှိသည့် အချက်များကို အမြန်လေ့လာနိုင်ရန်လမ်းညွှန်ပါ။"
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://www.starfableio.com/blogs/master-rust-quickly/index.html"
+    />
+    <meta
+      property="og:image"
+      content="https://www.starfableio.com/master-rust-quickly.png"
+    />
+    <meta property="og:image:alt" content="Rust ကို အမြန်လေ့လာပါ" />
+    <meta property="og:site_name" content="StarFableIO" />
+
+    <!-- Twitter Cards Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Rust ကို မြန်မြန် ကျွမ်းကျင်နိုင်ဖို့ သိထားသင့်တဲ့ အချက်များ 🚀🦀"
+    />
+    <meta
+      name="twitter:description"
+      content="Experienced developers များအတွက် Rust ရဲ့ essential features များဖြစ်သည့် ownership, borrowing, concurrency အစရှိသည့် အချက်များကို အမြန်လေ့လာနိုင်ရန်လမ်းညွှန်ပါ။"
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.starfableio.com/master-rust-quickly.png"
+    />
+    <meta name="twitter:site" content="@YourTwitterHandle" />
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Rust ကို မြန်မြန် ကျွမ်းကျင်နိုင်ဖို့ သိထားသင့်တဲ့ အချက်များ",
+        "image": "https://www.starfableio.com/master-rust-quickly.png",
+        "author": {
+          "@type": "Person",
+          "name": "ထက်လင်းမောင်"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "StarFableIO",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.starfableio.com/logo.png"
+          }
+        },
+        "datePublished": "2024-10-11",
+        "description": "Experienced developers များအတွက် Rust ရဲ့ essential features များဖြစ်သည့် ownership, borrowing, concurrency အစရှိသည့် အချက်များကို အမြန်လေ့လာနိုင်ရန်လမ်းညွှန်ပါ။"
+      }
+    </script>
+    <link rel="stylesheet" href="/atom-one-dark.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="/scripts/highlight.min.js"></script>
+    <script src="/scripts/blog.js" defer></script>
+  </head>
+  <Layout>
+    <svg
+      onclick="toggleMenu()"
+      class="menu-toggle-svg"
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="24" fill="#1D1E22"></rect>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M34.276 28.6093C34.026 28.8593 33.6869 28.9997 33.3333 28.9997C32.9798 28.9997 32.6407 28.8593 32.3907 28.6093L24 20.2186L15.6093 28.6093C15.3579 28.8522 15.0211 28.9866 14.6715 28.9835C14.3219 28.9805 13.9875 28.8403 13.7403 28.5931C13.493 28.3459 13.3528 28.0114 13.3498 27.6618C13.3467 27.3123 13.4811 26.9755 13.724 26.724L22.1147 18.3333C22.6148 17.8334 23.2929 17.5526 24 17.5526C24.7071 17.5526 25.3853 17.8334 25.8853 18.3333L34.276 26.724C34.526 26.974 34.6664 27.3131 34.6664 27.6666C34.6664 28.0202 34.526 28.3593 34.276 28.6093Z"
+        fill="white"></path>
+    </svg>
+
+    <nav class="side-nav">
+      <a href="#variable" onclick="scrollToSection(event, '#variable')"
+        >Variable</a
+      >
+      <a href="#constants" onclick="scrollToSection(event, '#constants')"
+        >Constants</a
+      >
+      <a href="#shadowing" onclick="scrollToSection(event, '#shadowing')"
+        >Shadowing</a
+      >
+      <a href="#comments" onclick="scrollToSection(event, '#comments')"
+        >Comments</a
+      >
+      <a href="#functions" onclick="scrollToSection(event, '#functions')"
+        >Functions</a
+      >
+      <a href="#control-flow" onclick="scrollToSection(event, '#control-flow')"
+        >Control Flow</a
+      >
+      <a
+        href="#ownership-and-borrowing"
+        onclick="scrollToSection(event, '#ownership-and-borrowing')"
+        >Ownership and Borrowing</a
+      >
+      <a
+        class="sub"
+        href="#ownership"
+        onclick="scrollToSection(event, '#ownership')">Ownership</a
+      >
+      <a
+        class="sub"
+        href="#borrowing"
+        onclick="scrollToSection(event, '#borrowing')">Borrowing</a
+      >
+      <a
+        class="sub"
+        href="#borrowing-rules"
+        onclick="scrollToSection(event, '#borrowing-rules')">Borrowing Rules</a
+      >
+      <a
+        href="#stack-and-heap"
+        onclick="scrollToSection(event, '#stack-and-heap')">Stack and Heap</a
+      >
+      <a href="#slices" onclick="scrollToSection(event, '#slices')">Slices</a>
+      <a href="#struct" onclick="scrollToSection(event, '#struct')">Struct</a>
+      <a
+        class="sub"
+        href="#defining-and-using-a-regular-struct"
+        onclick="scrollToSection(event, '#defining-and-using-a-regular-struct')"
+        >Struct ကို သတ်မှတ်ခြင်းနှင့် အသုံးပြုခြင်း</a
+      >
+      <a
+        class="sub"
+        href="#tuple-struct"
+        onclick="scrollToSection(event, '#tuple-struct')">Tuple Struct</a
+      >
+      <a
+        class="sub"
+        href="#unit-struct"
+        onclick="scrollToSection(event, '#unit-struct')">Unit Struct</a
+      >
+      <a
+        class="sub"
+        href="#adding-methods"
+        onclick="scrollToSection(event, '#adding-methods')"
+        >Methods များထည့်ခြင်း</a
+      >
+      <a href="#enum" onclick="scrollToSection(event, '#enum')">Enum</a>
+      <a href="#match" onclick="scrollToSection(event, '#match')">Match</a>
+      <a href="#if-let" onclick="scrollToSection(event, '#if-let')">If Let</a>
+      <a
+        href="#package-crate-module"
+        onclick="scrollToSection(event, '#package-crate-module')"
+        >Package Crate Module</a
+      >
+      <a
+        class="sub"
+        href="#creating-a-project"
+        onclick="scrollToSection(event, '#creating-a-project')"
+        >ပရောဂျက်တစ်ခုဖန်တီးခြင်း</a
+      >
+      <a
+        class="sub"
+        href="#defining-modules-in-separate-files"
+        onclick="scrollToSection(event, '#defining-modules-in-separate-files')"
+        >သီးခြားဖိုင်များတွင် Modules ကိုသတ်မှတ်ခြင်း</a
+      >
+      <a
+        class="sub"
+        href="#organizing-code-in-submodules"
+        onclick="scrollToSection(event, '#organizing-code-in-submodules')"
+        >Submodules များတွင် Code များစုစည်းခြင်း</a
+      >
+      <a
+        href="#common-collections"
+        onclick="scrollToSection(event, '#common-collections')"
+        >Common Collections</a
+      >
+      <a href="#generic" onclick="scrollToSection(event, '#generic')">Generic</a
+      >
+      <a href="#traits" onclick="scrollToSection(event, '#traits')">Traits</a>
+      <a href="#lifetime" onclick="scrollToSection(event, '#lifetime')"
+        >Lifetime</a
+      >
+      <a
+        href="#error-handling"
+        onclick="scrollToSection(event, '#error-handling')">Error Handling</a
+      >
+      <a
+        href="#automated-test"
+        onclick="scrollToSection(event, '#automated-test')">Automated Test</a
+      >
+      <a
+        href="#anonymous-function-closure"
+        onclick="scrollToSection(event, '#anonymous-function-closure')"
+        >Anonymous Function Closure</a
+      >
+      <a href="#iterators" onclick="scrollToSection(event, '#iterators')"
+        >Iterators</a
+      >
+      <a
+        href="#smart-pointer"
+        onclick="scrollToSection(event, '#smart-pointer')">Smart Pointer</a
+      >
+      <a
+        href="#dereferencing-smart-pointers"
+        onclick="scrollToSection(event, '#dereferencing-smart-pointers')"
+        >Smart Pointers တွေကို dereference လုပ်ခြင်း</a
+      >
+      <a href="#concurrency" onclick="scrollToSection(event, '#concurrency')"
+        >Concurrency</a
+      >
+      <a
+        class="sub"
+        href="#basic-thread-example"
+        onclick="scrollToSection(event, '#basic-thread-example')"
+        >အခြေခံ Thread ဥပမာ</a
+      >
+      <a
+        class="sub"
+        href="#using-arc-atomic-reference-counting"
+        onclick="scrollToSection(event, '#using-arc-atomic-reference-counting')"
+        >Arc (Atomic Reference Counting) ကိုအသုံးပြုခြင်း</a
+      >
+      <a
+        class="sub"
+        href="#using-mutex-for-safe-mutability-across-threads"
+        onclick="scrollToSection(event, '#using-mutex-for-safe-mutability-across-threads')"
+        >Threads ကြားမှာ Safe Mutability အတွက် Mutex ကို အသုံးပြုခြင်း</a
+      >
+      <a
+        class="sub"
+        href="#message-passing-between-threads"
+        onclick="scrollToSection(event, '#message-passing-between-threads')"
+        >Threads ကြား Message Passing လုပ်ခြင်း</a
+      >
+    </nav>
+    <article class="blog-post">
+      <h1>{blogPost.title}</h1>
+      <p class="date">{blogPost.date}</p>
+      <div class="author-profile">
+        <img src="/profile.jpeg" alt="Author Photo" class="author-photo" />
+        <div>
+          <p class="author-name">ထက်လင်းမောင်</p>
+        </div>
+      </div>
+      <img
+        src="/master-rust-quickly.png"
+        alt="Master rust quickly"
+        class="blog-image"
+      />
+
+      <div class="content">
+        <p>
+          Rust ဆိုတာ powerful systems programming language တစ်ခုဖြစ်ပြီး memory
+          safety, speed, concurrency တွေမှာ ထူးခြားပါတယ်။ အကယ်၍ စာဖတ်သူ အခြား
+          programming language တွေမှာ အတွေ့အကြုံရှိပြီးသားဆိုရင်၊ ပါသမျှ feature
+          တွေကို အသေးစိတ်လေ့လာစရာ မလိုပါဘူး။ ဒီလမ်းညွှန်ကနေ Rust ရဲ့
+          အဓိကအချက်တွေကို အလွယ်နဲ့ လျှင်မြန်စွာ ကျွမ်းကျင်ဖို့ စာဖတ်သူကို
+          ကူညီပေးမှာပါ 🎉
+        </p>
+        <h2 id="variable">Variable ✨</h2>
+        <p>
+          Rust မှာ Variable တွေက default immutable ဖြစ်ပါတယ်။ mutable
+          လည်းလုပ်နိုင်ပါတယ်။ မလိုအပ်ရင် immutable ထားတာ အကောင်းဆုံးပါ။
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 5; // Immutable
+    let mut y = 10; // Mutable
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="constants">Constants 🚦</h2>
+        <p>
+          Constants ဟာ variables နဲ့ တူပေမယ့် အမြဲတမ်း immutable ဖြစ်ပြီး type
+          ကို ဖော်ပြဖို့လိုပါတယ်။ စာဖတ်သူအနေနဲ့ ဘယ်တော့မှ မပြောင်းလဲတဲ့
+          တန်ဖိုးတစ်ခုလိုချင်တယ်ဆိုရင်တော့ Constants ကို သုံးပါ။
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">const MAX_POINTS: u32 = 100;</code></pre>
+        </CodeContainer>
+        <h2 id="shadowing">Shadowing 🕶️</h2>
+        <p>
+          Shadowing က variable တစ်ခုကို နာမည်တူအသစ်ပြန် declare ခွင့်ပေးပြီး,
+          တန်ဖိုးအသစ်နဲ့ ပြန်စနိုင်အောင် လုပ်ဆောင်ပေးတာပါ။
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 5;
+    let x = x + 1; // အခု x က 6 ပါ။
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="comments">Comments 💬</h2>
+        <p>
+          Comments က program အတွင်းမှာ မ run ပေမယ့် အခြားသူတွေအတွက်
+          ပိုပြီးရှင်းလင်းအောင် လုပ်ပေးပါတယ်။
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">// ဒါက comment</code></pre>
+        </CodeContainer>
+        <h2 id="functions">Functions 🛠️</h2>
+        <p>
+          Functions က Rust programs တွေရဲ့ အဓိကအချက်ပါပဲ။ Inputs ယူပြီး
+          operations တွေ လုပ်ဆောင်ကာ Outputs ပြန်ပေးပါတယ်။
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn add(a: i32, b: i32) -&gt; i32 &#123;
+    a + b
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="control-flow">Control Flow 🔁</h2>
+        <p>
+          Rust မှာ familiar control flow constructs တွေအားလုံးကို
+          ထည့်သွင်းထားပါတယ်၊ ဒါပေမယ့် code ကိုပိုလုံခြုံအောင် နဲ့
+          ပိုလွယ်ကူအောင်လည်း စီစဉ်ပေးထားပါတယ်။
+        </p>
+        <ul>
+          <li>
+            <code>If-Else</code>: Rust ရဲ့ <code>if</code>
+            <code>else</code> က conditions တွေအတိုင်း code ကို execute လုပ်ပါတယ်။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 6;
+    if x &gt; 5 &#123;
+        println!("x သည် 5 ထက်ကြီးသည်");
+    &#125; else &#123;
+        println!("x သည် 5 သို့မဟုတ် 5 ထက်နည်းသည်");
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            <code>Loop</code>: loop က <code>break</code> မလုပ်တဲ့အထိ run ပါတယ်။ တစ်ခုခု
+            အကြိမ်ကြိမ် လုပ်ချင်ရင် အသုံးဝင်ပါတယ်။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let mut counter = 0;
+    loop &#123;
+        counter += 1;
+        if counter == 5 &#123;
+            break;
+        &#125;
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            <code>While</code>: Condition မှန်နေသရွေ့ run ပါတယ်။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let mut number = 3;
+    while number != 0 &#123;
+        println!("&#123;number&#125;");
+        number -= 1;
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            <code>For</code>: Rust ရဲ့ <code>for</code> loop က ranges, arrays နဲ့
+            အခြား collections တွေကို iterating လုပ်ဖို့ အရမ်းအသုံးဝင်ပါတယ်။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    for number in 1..4 &#123;
+        println!("&#123;number&#125;");
+    &#125;
+      
+    let array = [10, 20, 30];
+    for element in array.iter() &#123;
+        println!("Array value: &#123;element&#125;");
+    &#125;
+&#125;</code></pre>
+        </CodeContainer>
+        <h2 id="ownership-and-borrowing">Ownership and Borrowing 🔑</h2>
+        <p>
+          Rust ရဲ့ memory safety က Ownership နဲ့ Borrowing ကိုမှီခိုနေပါတယ်။
+          Value တစ်ခုစီမှာ owner တစ်ခုစီရှိပြီး၊ owner က scope အပြင်ထွက်သွားရင်
+          value ကို memory ကနေ drop လုပ်ပါတယ်။
+        </p>
+        <h3 id="ownership">Ownership</h3>
+        <p>
+          Variable တစ်ခုကို နောက်တစ်ခုဆီ assign လိုက်ရင် ownership
+          ပြောင်းသွားပြီး၊ original variable ကပြန်သုံးမရတော့ပါဘူး။
+        </p>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let s = String::from("မင်္ဂလာပါ");
+    let s2 = s; // Ownership ကို s2 သို့ ရွှေ့သည်
+    // println!("&#123;s&#125;");  // Error: s ကိုသုံးမရတော့ပါ
+&#125;</code></pre>
+        </CodeContainer>
+        <h3 id="borrowing">Borrowing</h3>
+        <p>
+          Ownership ကို ပြောင်းမပေးဘဲ reference ဖြင့် value တွေကို
+          ယူသုံးနိုင်ပါတယ်။ Borrowing ဟာ immutable လည်းဖြစ်နိုင်တယ်၊ mutable
+          လည်းဖြစ်နိုင်ပါတယ်။
+        </p>
+        <ul>
+          <li>Immutable Borrowing:</li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let s = String::from("မင်္ဂလာပါ");
+    let len = calculate_length(&amp;s);  // s ကို borrow တယ်
+    println!("Length: &#123;len&#125;");  // s ကိုသုံးလို့ရသေးတယ်
+&#125;
+      
+fn calculate_length(s: &amp;String) -&gt; usize &#123;
+  s.len()  // Borrowed, not owned
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>Mutable Borrowing:</li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let mut s = String::from("မင်္ဂလာ");
+    change(&amp;mut s);
+    println!("&#123;s&#125;"); // Prints: မင်္ဂလာပါ
+&#125;
+      
+fn change(some_string: &amp;mut String) &#123;
+    some_string.push_str("ပါ");
+&#125;</code></pre>
+        </CodeContainer>
+        <h3 id="borrowing-rules">Borrowing Rules</h3>
+        <ul>
+          <li>
+            တစ်ချိန်တည်းမှာ mutable reference တစ်ခုသာ ရှိနိုင်ပြီး၊ သို့မဟုတ်
+            immutable references များစွာ ရှိနိုင်ပါတယ်—ဒါပေမယ့် နှစ်ခုလုံး
+            တစ်ပြိုင်နက် မဖြစ်ရပါဘူး။
+          </li>
+          <li>
+            Reference တွေဟာ အမြဲတမ်း valid ဖြစ်နေဖို့ လိုအပ်ပါတယ် (lifetimes က
+            ဒီအရာကို ထိန်းချုပ်ပေးပါတယ်)။
+          </li>
+        </ul>
+        <h2 id="stack-and-heap">Stack and Heap 📦</h2>
+        <p>
+          Rust မှာ memory ကို stack နဲ့ heap ဆိုတဲ့ နယ်ပယ်နှစ်ခုကိုအခြေခံပြီး
+          manage လုပ်ပါတယ်။
+        </p>
+        <ul>
+          <li>
+            Stack: Fixed size ရှိတဲ့ data တွေ (ဥပမာ- integers, booleans) ကို
+            stack မှာ သိမ်းပါတယ်။ Stack က LIFO (last-in, first-out) order
+            အတိုင်း data ထည့်ပြီး ပြန်ဖယ်နိုင်တဲ့အတွက် မြန်တာပါ။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let x = 5; // stack မှာ သိမ်းပါတယ် 
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            Heap: Dynamic သို့မဟုတ် အရွယ်အစား မသိရသေးတဲ့ data တွေ (ဥပမာ -
+            String) ကို သိမ်းဆည်းရာမှာ အသုံးပြုပါတယ်။ Heap ပေါ်မှာ data
+            တွေသိမ်းရင် အနည်းငယ်နှေးတတ်ပေမယ့် ပိုပြီး flexible ဖြစ်စေပါတယ်။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+    let s = String::from("မင်္ဂလာပါ"); // heap မှာ သိမ်းပါတယ် 
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            Stack vs. Heap:
+            <ul>
+              <li>
+                Stack က fixed-size data တွေကို သိမ်းဆည်းရာမှာ အသုံးဝင်ပြီး
+                အလျင်မြန်ဆုံး allocate လုပ်သွားနိုင်ပါတယ်။
+              </li>
+              <li>
+                Heap က flexible ဖြစ်ဖို့လိုပြီး အရွယ်အစား ပြောင်းလဲတတ်တဲ့ data
+                တွေကို သိမ်းဆည်းရာမှာ အသုံးပြုပြီး stack ထက်နှေးပါတယ်။
+              </li>
+            </ul>
+          </li>
+        </ul>
+        <h2 id="slices">Slices 🔪</h2>
+        <p>
+          Rust ရဲ့ slice က collection (array သို့မဟုတ် string) ရဲ့
+          တစ်စိတ်တစ်ပိုင်းကို reference လုပ်ပြီး အသုံးပြုခွင့်ပေးတဲ့ အရာပါ။ Data
+          ကို ပိုင်ဆိုင်ခြင်းမလိုဘဲ, collection ရဲ့ အစိတ်အပိုင်းတစ်ခုကိုသာ
+          သုံးချင်တဲ့အခါ Slices က အရမ်းအသုံးဝင်ပါတယ်။
+        </p>
+        <ul>
+          <li>
+            Slice ကိုသတ်မှတ်ခြင်း: Slice က index range ကိုသုံးပြီး array
+            သို့မဟုတ် string ရဲ့ တစ်စိတ်တစ်ပိုင်းကို borrow လုပ်နိုင်စေပါတယ်။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+  let arr = [1, 2, 3, 4, 5];
+  let slice = &arr[1..4]; // Index 1 ကနေ 3 အထိ Slice ဖြတ်တယ်
+  println!("&#123;:?&#125;", slice); // Prints: [2, 3, 4]
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            String Slices: String ရဲ့ တစ်စိတ်တစ်ပိုင်းကို borrow
+            လုပ်နိုင်စေပါတယ်။
+          </li>
+        </ul>
+        <CodeContainer>
+          <pre><code class="language-rust">fn main() &#123;
+  let s = String::from("hello world");
+  let hello = &s[0..5]; // Slice "hello"
+  println!("&#123;hello&#125;"); // Prints: hello
+&#125;</code></pre>
+        </CodeContainer>
+        <ul>
+          <li>
+            Slices ကို ဘာကြောင့် သုံးတာလဲ? Slices က data အစိတ်အပိုင်းတွေကို copy
+            သို့မဟုတ် owning မလုပ်ဘဲ သုံးနိုင်စေတယ်၊ ဒါကြောင့် code က efficient
+            ဖြစ်ပြီး စိတ်ချရပါတယ်။
+          </li>
+        </ul>
+      </div>
+      <h2 id="struct">Struct 🧩</h2>
+      <p>
+        Struct က data တွေကို bundle လုပ်ပြီး custom types အဖြစ်
+        ဆောက်နိုင်စေပါတယ်။ အခြား programming languages များမှာတွေ့ရတဲ့ objects
+        တို့လိုပေမယ့် Rust မှာ ပို flexible ဖြစ်ပါတယ်။ Structs တွေမှာ methods
+        တွေ လည်းထည့်နိုင်ပါတယ်။
+      </p>
+      <h3 id="defining-and-using-a-regular-struct">
+        Struct ကို သတ်မှတ်ခြင်းနှင့် အသုံးပြုခြင်း
+      </h3>
+      <p>User struct တစ်ခု ဆောက်ပြီး အသုံးပြုနည်းကို ဖော်ပြပါမယ်:</p>
+      <ul>
+        <li>Struct ကို သတ်မှတ်ခြင်း</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct User &#123;
+    name: String,
+    age: u32,
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>Struct ကို အသုံးပြုခြင်း</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct User &#123;
+    name: String,
+    age: u32,
+&#125;
+
+fn main() &#123;
+    let user = User &#123;
+        name: String::from("ထက်လင်းမောင်"),
+        age: 16,
+    &#125;;
+    println!("Name: &#123;&#125;, Age: &#123;&#125;", user.name, user.age);
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="tuple-struct">Tuple Struct</h3>
+      <p>
+        Tuple struct က tuple နဲ့ဆင်တူပေမယ့် နာမည်တစ်ခုထပ်ပေးနိုင်တာကြောင့် named
+        fields မလိုအပ်တဲ့ simple struct တစ်ခုလို အသုံးချချင်တဲ့အခါ
+        အထူးအသုံးဝင်ပါတယ်။
+      </p>
+      <ul>
+        <li>Tuple Struct ကို သတ်မှတ်ခြင်း</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct Color(i32, i32, i32);  // RGB တန်ဖိုးများကို ကိုယ်စားပြုသည်</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>Tuple Struct ကို အသုံးပြုခြင်း</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct Color(i32, i32, i32);
+          
+fn main() &#123;
+    let red = Color(255, 0, 0);
+    println!("Red: &#123;&#125;, Green: &#123;&#125;, Blue: &#123;&#125;", red.0, red.1, red.2);
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="unit-struct">Unit Struct</h3>
+      <p>
+        Unit struct ဟာ data မပါဘူး၊ ဒါပေမယ့် traits နဲ့ type-based logic အတွက်
+        အသုံးချနိုင်ပါတယ်။
+      </p>
+      <ul>
+        <li>Unit Struct ကို သတ်မှတ်ခြင်း</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct AlwaysEqual;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>Unit Struct ကို အသုံးပြုခြင်း</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">struct AlwaysEqual;
+      
+fn main() &#123;
+    let _eq = AlwaysEqual;
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="adding-methods">Methods များထည့်ခြင်း</h3>
+      <p>
+        Struct တစ်ခုစီအတွက် impl ကိုသုံးပြီး method တွေ ထည့်နိုင်ပါတယ်၊ ဒီနည်းက
+        custom types တွေကို ပိုပြီး အသုံးဝင်အောင် behavior
+        တွေထည့်ဖန်တီးပေးနိုင်ပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">struct User &#123;
+    name: String,
+    age: u32,
+&#125;
+
+impl User &#123;
+    // Associated function (constructor လိုမျိုး)
+    fn new(name: String, age: u32) -&gt; User &#123;
+        User &#123; name, age &#125;
+    &#125;
+      
+    // self ကို reference အနေနဲ့ ယူသုံးတဲ့ method
+    fn greet(&amp;self) &#123;
+        println!("မင်္ဂလာပါ ကျွန်တော့်နာမည်က &#123;&#125;ပါ!", self.name);
+    &#125;
+&#125;
+      
+fn main() &#123;
+    let user = User::new(String::from("ထက်လင်းမောင်"), 16);
+    user.greet();  // Outputs: မင်္ဂလာပါ ကျွန်တော့်နာမည်က ထက်လင်းမောင်ပါ!
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="enum">Enum 🛣️</h2>
+      <p>
+        Enums က value တစ်ခုအတွက် အနေနဲ့ ဖြစ်နိုင်တဲ့ မတူညီတဲ့ states တွေကို
+        သတ်မှတ်နိုင်စေတယ်။ predefined options တစ်ခုခုသာ ဖြစ်နိုင်တဲ့
+        အခြေအနေတွေကို ကိုင်တွယ်ရာမှာ အရမ်းအသုံးဝင်ပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">enum Direction &#123;
+    Up,
+    Down,
+    Left,
+    Right,
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="match">Match 🔄</h2>
+      <p><code>match</code> က Rust ရဲ့ switch statement ပုံစံပါ။</p>
+      <CodeContainer>
+        <pre><code class="language-rust">enum Direction &#123;
+    Up,
+    Down,
+    Left,
+    Right,
+&#125;
+      
+fn main() &#123;
+    let direction = Direction::Up;
+      
+    match direction &#123;
+        Direction::Up =&gt; println!("Going up!"),
+        _ =&gt; println!("Other direction"),
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="if-let">If Let 🧐</h2>
+      <p>
+        Enum တစ်ခုမှာ state တစ်ခုအပေါ်ပဲ အာရုံစိုက်ဖို့လိုတဲ့အခါ <code
+          >if let</code
+        > က specific pattern တစ်ခုကိုအလွယ်တကူ နှိုင်းယှဉ်နိုင်ပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let optional_value = Some(3);
+      
+    if let Some(x) = optional_value &#123;
+        println!("Found: &#123;x&#125;");
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="package-crate-module">Package, Crate, Module 📦</h2>
+      <p>
+        Rust မှာ package၊ crate၊ နဲ့ module တွေက code တွေကို စနစ်တကျ organize
+        ပေးဖို့ အထောက်အကူပေးပါတယ်။ Package တွေမှာ crate တွေကို ပါဝင်ထားပြီး၊
+        crate တွေမှာ module တွေကို ပါဝင်ထားတာကြောင့် functionality တွေကို
+        မတူညီတဲ့ files တွေမှာခွဲထားလို့ရပါတယ်။
+      </p>
+      <h3 id="creating-a-project">ပရောဂျက်တစ်ခုဖန်တီးခြင်း</h3>
+      <p>
+        <code>cargo</code> ကိုသုံးပြီး Rust project အသစ်ကို စတင်ဖန်တီးပါ။ ဒီနည်းလမ်းက
+        new package နဲ့ crate တစ်ခုကို အလိုအလျောက်ပြင်ဆင်ပေးပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-bash">cargo new my_project</code></pre>
+      </CodeContainer>
+      <h3 id="defining-modules-in-separate-files">
+        သီးခြားဖိုင်များတွင် Modules ကိုသတ်မှတ်ခြင်း
+      </h3>
+      <p>
+        Module တွေက code တွေကို အပိုင်းပိုင်းခွဲပြီး အခြား file တွေမှာ ထားဖို့
+        အထောက်အကူပေးပါတယ်။ <code>main.rs</code> မှာ module တစ်ခု ပြန်လည် သတ်မှတ်ပြီး
+        အခြား file တစ်ခုကို လင့်ခ် ပေးနိုင်ပါတယ်။
+      </p>
+      <ul>
+        <li>main.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">mod utils;  // utils.rs ကိုရည်ညွှန်းပါတယ်
+      
+fn main() &#123;
+    utils::greet();
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>utils.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">pub fn greet() &#123;
+    println!("utils မှ မင်္ဂလာပါ!");
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="organizing-code-in-submodules">
+        Submodules များတွင် Code များစုစည်းခြင်း
+      </h3>
+      <p>
+        Folder တွေမှာ structure လုပ်ခြင်းအားဖြင့် submodules
+        တွေကိုဖန်တီးနိုင်ပါတယ်။
+      </p>
+      <ul>
+        <li>main.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">mod utils;
+      
+fn main() &#123;
+    utils::math::add(2, 3);
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>utils/mod.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">pub mod math;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>utils/math.rs:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">pub fn add(a: i32, b: i32) -&gt; i32 &#123;
+    a + b
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="common-collections">Common Collections 📚</h2>
+      <ul>
+        <li>
+          <code>Vector</code>: လွယ်ကူစွာ resize နိုင်သော Dynamic arrays
+          ဖြစ်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let mut numbers = vec![1, 2, 3];
+    numbers.push(4);
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li><code>Array</code>: Fixed-size arrays.</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers: [i32; 3] = [1, 2, 3];
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Tuple</code>: Different data types တွေကို group လုပ်ဖို့
+          အထောက်အကူပေးပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let person = ("ထက်လင်းမောင်", 16);
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="generic">Generic 📦</h2>
+      <p>
+        Generics က type အမျိုးမျိုးနဲ့ အလုပ်လုပ်နိုင်အောင် flexible functions
+        နဲ့ structs တွေကို တည်ဆောက်ပေးပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn largest&lt;T: Ord&gt;(list: &amp;[T]) -&gt; &amp;T &#123;
+    list.iter().max().unwrap()
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="traits">Traits 🧑‍🏫</h2>
+      <p>
+        Rust ရဲ့ traits က အခြား programming languages တွေမှာပါတဲ့ interfaces
+        လိုမျိုးဖြစ်ပြီး၊ types အမျိုးမျိုးမှာ shared behavior အနေနဲ့ implement
+        လုပ်ထားနိုင်ပါတယ်။
+      </p>
+      <ul>
+        <li>
+          <code>Trait ကို သတ်မှတ်ခြင်း</code>: Trait တစ်ခုဟာ implement လုပ်မယ့်
+          types တွေမှာ ဘယ် methods တွေကို implement လုပ်ရမယ်ဆိုတာကို
+          သတ်မှတ်ပေးပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&amp;self);
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Trait ကို implement လုပ်ခြင်း</code>: Trait (ဥပမာ <code
+            >Greet</code
+          > ) ကို type တစ်ခု (ဥပမာ <code>Person</code>) မှာ လွယ်ကူစွာ implement
+          လုပ်နိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&self);
+&#125;
+
+struct Person &#123;
+    name: String,
+&#125;
+      
+impl Greet for Person &#123;
+    fn greet(&amp;self) &#123;
+        println!("မင်္ဂလာပါ ကျွန်တော့်နာမည်က &#123;&#125;ပါ!", self.name);
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Trait ကိုအသုံးပြုခြင်း</code>: Trait ကို implement ပြီးဆုံးပါက
+          type ရဲ့ instance တွေမှာ trait method တွေကို အသုံးပြုနိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">trait Greet &#123;
+    fn greet(&self);
+&#125;
+
+struct Person &#123;
+    name: String,
+&#125;
+
+impl Greet for Person &#123;
+    fn greet(&self) &#123;
+        println!("မင်္ဂလာပါ ကျွန်တော့်နာမည်က &#123;&#125;ပါ!", self.name);
+    &#125;
+&#125;
+
+fn main() &#123;
+    let person = Person &#123;
+         name: String::from("ထက်လင်းမောင်"),
+    &#125;;
+    person.greet();  // Outputs: မင်္ဂလာပါ ကျွန်တော့်နာမည်က ထက်လင်းမောင်ပါ!
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Traits က behavior တွေကို types အမျိုးမျိုး ကို share လုပ်နိုင်အောင်
+        သတ်မှတ်ပေးနိုင်တာကြောင့် code ကို သန့်ရှင်းပြီး
+        ပြန်လည်အသုံးပြုနိုင်အောင် ကူညီပေးပါတယ်။
+      </p>
+      <h2 id="lifetime">Lifetime ⏳</h2>
+      <p>
+        Lifetimes က references တွေကို လိုအပ်သလောက်အထိသာ အသုံးပြုနိုင်အောင်
+        ထိန်းချုပ်ပေးတာဖြစ်ပြီး dangling references တွေဖြစ်ပေါ်ခြင်းကို
+        ကာကွယ်ပေးပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn longest&lt;'a&gt;(x: &amp;'a str, y: &amp;'a str) -&gt; &amp;'a str &#123;
+    if x.len() &gt; y.len() &#123;
+        x
+    &#125; else &#123;
+        y
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="error-handling">Error Handling ⚠️</h2>
+      <p>
+        Rust မှာ exceptions မရှိဘဲ <code>Result</code> နဲ့ <code>Option</code> types
+        တွေကို error handling အတွက် အသုံးပြုပါတယ်၊ ဒါက fail ဖြစ်နိုင်ချေရှိတဲ့အခါမှာ
+        အလွယ်တကူ စီမံနိုင်စေပါတယ်။
+      </p>
+      <ul>
+        <li>
+          <code>Basic Example</code>: ဒီမှာ <code>Result</code> နဲ့ simple division
+          operation ကို handle ဘယ်လိုလုပ်ရမယ်ဆိုတာ ပြထားပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn divide(a: f64, b: f64) -&gt; Result&lt;f64, String&gt; &#123;
+    if b == 0.0 &#123;
+        Err("သုညဖြင့် စား၍မရပါ။".to_string())
+    &#125; else &#123;
+        Ok(a / b)
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Error Propagation with ?</code>: <code>?</code> operator က error
+          handling ကို ပိုလွယ်ကူစေပြီး error တက်ခဲ့ရင် အလိုအလျောက် error ကို ပြန်ပေးသွားပြီး
+          propagate upwards လုပ်ပေးနိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn divide(a: f64, b: f64) -&gt; Result&lt;f64, String&gt; &#123;
+    if b == 0.0 &#123;
+        Err("သုညဖြင့် စား၍မရပါ။".to_string())
+    &#125; else &#123;
+        Ok(a / b)
+    &#125;
+&#125;
+
+fn calculate_division() -&gt; Result&lt;f64, String&gt; &#123;
+    let result = divide(10.0, 0.0)?;  // division fails ရင် error ကို propagate လုပ်တယ်
+    Ok(result)
+&#125;
+      
+fn main() &#123;
+    match calculate_division() &#123;
+        Ok(value) =&gt; println!("Result: &#123;value&#125;"),
+        Err(e) =&gt; println!("Error: &#123;e&#125;"),
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        ဒီဥပမာမှာ၊ <code>divide</code> function က error ပြန်ပေးမယ်ဆိုရင် အဲဒီ error
+        ကို အလိုအလျောက် <code>calculate_division</code> ဆီသို့ ပေးပို့သွားပါလိမ့်မယ်၊
+        ဒီလိုလုပ်ခြင်းကြောင့် boilerplate code မလိုတော့ဘဲ error handling ကို ပိုပြီး
+        တိကျသေချာစွာ ရှင်းလင်းစေပါတယ်။
+      </p>
+      <h2 id="automated-test">Automated Test ✅</h2>
+      <p>
+        Testing က Rust မှာ built-in ပါပြီး၊ function တွေကို <code>#[test]</code>
+        နဲ့သတ်မှတ်ပြီး <code>cargo test</code> ကို အသုံးပြုကာ test အောင်မြင်ကြောင်းစစ်ဆေးနိုင်ပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">#[cfg(test)]
+mod tests &#123;
+    #[test]
+    fn it_works() &#123;
+        assert_eq!(2 + 2, 4);
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="anonymous-function-closure">Anonymous Function, Closure 🔒</h2>
+      <p>
+        Rust ရဲ့ closures တွေက environment က variables တွေကို capture ပြီး
+        inline function လိုမျိုးအသုံးပြုနိုင်တဲ့ anonymous functions
+        တွေဖြစ်ပါတယ်။ ပုံမှန် functions တစ်ခုလိုအသုံးပြုနိုင်ပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let add_one = |x: i32| x + 1;
+    println!("&#123;&#125;", add_one(5)); // 6
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Closures က အလွန် flexible ဖြစ်ဖို့လိုပြီး အနီးပတ်ဝန်းကျင် scope ထဲက
+        variables တွေကို capture လုပ်နိုင်တဲ့အပြင် အဲဒီ values တွေကို ဖတ်ခြင်း၊
+        ပြောင်းလဲခြင်း ပြုလုပ်နိုင်ပါတယ်။
+      </p>
+      <h2 id="iterators">Iterators 🔄</h2>
+      <p>
+        Iterators က value တွေကို အစုလိုက် အတွဲလိုက် process လုပ်ခြင်းအတွက်
+        သုံးစွဲနိုင်ပါတယ်။ <code>map</code>၊ <code>filter</code> နဲ့ <code
+          >fold</code
+        > လို functional operations တွေကို လွယ်ကူစွာ ပြုလုပ်နိုင်ပါတယ်။
+      </p>
+      <ul>
+        <li>Vector တစ်ခုအပေါ် iterate လုပ်ခြင်း:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4, 5];
+      
+    for num in numbers.iter() &#123;
+        println!("&#123;num&#125;"); // Prints each number
+    &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>map</code> ကို Closure နဲ့အသုံးပြုခြင်း - Collection ထဲမှာရှိတဲ့
+          element တစ်ခုစီကို <code>map</code> နှင့် ပြောင်းလဲနိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4];
+    let doubled: Vec&lt;i32&gt; = numbers.iter().map(|x| x * 2).collect();
+      
+    println!("&#123;:?&#125;", doubled); // Prints: [2, 4, 6, 8]
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>filter</code> နဲ့စစ်ထုတ်ခြင်း - Collection ထဲမှာရှိတဲ့ elements တွေကို
+          condition နဲ့ စစ်ထုတ်နိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4, 5];
+    let even_numbers: Vec&lt;i32&gt; = numbers.into_iter().filter(|&amp;x| x % 2 == 0).collect();
+      
+    println!("&#123;:?&#125;", even_numbers); // Prints: [2, 4]
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>fold</code> နဲ့စုစည်းခြင်း - Value တွေကို result တစ်ခုတည်မှာ အစုလိုက်သိမ်းဆည်းနိုင်ပါတယ်
+          (ဥပမာ summing လုပ်ခြင်း)။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4];
+    let sum = numbers.iter().fold(0, |acc, &amp;x| acc + x);
+      
+    println!("Sum: &#123;sum&#125;"); // Prints: Sum: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Rust ရဲ့ iterators တွေက lazy ဖြစ်ပါတယ်၊ အလွယ်တကူသုံးစွဲနိုင်ပြီး
+        တကယ်လက်တွေ့မသုံးရသေးတဲ့အထိ နေရာမယူပါဘူး။ ဒါကြောင့် အကြီးစား dataset
+        တွေနဲ့ streams တွေ ကိုကိုင်တွယ်ရာ အထူးထိရောက်ပါတယ်။
+      </p>
+      <h2 id="smart-pointer">Smart Pointer 🧠</h2>
+      <p>
+        Rust ရဲ့ smart pointers တွေက memory ကို ထိရောက်စွာ စီမံခန့်ခွဲဖို့
+        အရမ်းအထောက်အကူပြုပါတယ်။ အသုံးများတဲ့ smart pointers သုံးမျိုးရှိပါတယ်။
+      </p>
+      <ul>
+        <li>
+          <code>Box</code>: <code>Box</code> က data ကို stack မပေါ်မှာမထည့်ဘဲ heap
+          ပေါ်မှာ သိမ်းဆည်းနိုင်စေပါတယ်။ data အများအပြား သိမ်းဆည်းဖို့ လိုအပ်တာမျိုးမှာလည်းသုံးနိုင်သလို
+          recursive types လိုမျိုးအတွက်လည်း အသုံးပြုနိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let boxed_value = Box::new(10);
+    println!("Boxed value: &#123;boxed_value&#125;"); // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>Rc (Reference Counted)</code>: <code>Rc</code> က data တစ်ခုကို shared
+          ownership လုပ်နိုင်စေပါတယ်။ read-only အတွက်သာသုံးမှာဆိုရင်တော့ program
+          အတွင်းမှာ Rc ကို အသုံးပြုနိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::rc::Rc;
+      
+fn main() &#123;
+    let a = Rc::new(5);
+    let b = Rc::clone(&amp;a); // b သည် a တန်ဖိုး၏ပိုင်ဆိုင်မှုကို မျှဝေတယ်
+    println!("a: &#123;a&#125;, b: &#123;b&#125;"); // Prints: a: 5, b: 5
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>RefCell</code>: <code>RefCell</code> က runtime အတွင်း value က immutable
+          ဖြစ်နေတဲ့အချိန်မှာပါ mutable borrowing ပြုလုပ်နိုင်စေပါတယ်။ interior mutability
+          လိုအပ်တဲ့နေရာမှာ (အထူးသဖြင့် <code>Rc</code> နဲ့ တွဲဖက်သုံးစွဲတဲ့အခါ) အသုံးပြုနိုင်ပါတယ်။
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::cell::RefCell;
+      
+fn main() &#123;
+    let value = RefCell::new(10);
+    *value.borrow_mut() += 5; // Mutably borrow ပြီး တန်ဖိုးကိုမွမ်းမံ သည်
+    println!("Modified value: &#123;&#125;", value.borrow()); // Prints: 15
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="dereferencing-smart-pointers">
+        Smart Pointers တွေကို dereference လုပ်ခြင်း 🛠️
+      </h2>
+      <p>
+        Dereferencing က smart pointer နောက်က value ကို သုံးစွဲဖို့ တိုက်ရိုက်
+        access လုပ်နိုင်အောင် ကူညီပေးတာပါ။ Rust မှာ <code>*</code> operator ကို အသုံးပြုပြီး
+        <code>Box</code>၊ <code>Rc</code> နဲ့ <code>RefCell</code> တို့ကို dereference
+        လုပ်နိုင်ပါတယ်။
+      </p>
+      <ul>
+        <li><code>Box ကို dereference လုပ်ခြင်း</code>:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let boxed_value = Box::new(10);
+    println!("Dereferenced Box value: &#123;&#125;", *boxed_value); // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li><code>Rc ကို dereference လုပ်ခြင်း</code>:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::rc::Rc;
+      
+fn main() &#123;
+    let a = Rc::new(5);
+    println!("Dereferenced Rc value: &#123;&#125;", *a); // Prints: 5
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li><code>RefCell ကို dereference လုပ်ခြင်း</code>:</li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::cell::RefCell;
+      
+fn main() &#123;
+    let value = RefCell::new(10);
+    println!("Dereferenced RefCell value: &#123;&#125;", *value.borrow()); // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <h2 id="concurrency">Concurrency ⚡</h2>
+      <p>
+        Rust ရဲ့ concurrency model က memory safety ကို အပြည့်အဝ ထိန်းသိမ်းရင်း
+        performance မြင့်မားမှုကိုလည်း ထိန်းသိမ်းပေးနိုင်ပါတယ်။ Rust မှာ
+        threads၊ <code>async/await</code>၊ <code>Arc</code>၊ <code>Mutex</code> smart
+        pointers နဲ့ message passing တို့ကို အသုံးပြုပြီး threads ကြားမှာ data မျှဝေရင်း
+        ဆက်သွယ်နိုင်ပါတယ်။
+      </p>
+      <h3 id="basic-thread-example">အခြေခံ Thread ဥပမာ</h3>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::thread;
+      
+fn main() &#123;
+    let handle = thread::spawn(|| &#123;
+        for i in 1..10 &#123;
+            println!("&#123;i&#125;");
+        &#125;
+    &#125;);
+      
+    handle.join().unwrap();  // thread ပြီးအောင်စောင့်တယ်
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="using-arc-atomic-reference-counting">
+        Arc (Atomic Reference Counting) ကိုအသုံးပြုခြင်း
+      </h3>
+      <p>
+        <code>Arc</code> က <code>Rc</code> ရဲ့ thread-safe version ဖြစ်ပါတယ်။ threads
+        များစွာ data တစ်ခုကို share လုပ်ဖို့လိုအပ်တဲ့အခါ <code>Arc</code> ကို သုံးပါ။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::sync::Arc;
+use std::thread;
+      
+fn main() &#123;
+    let data = Arc::new(5);
+    let data_clone = Arc::clone(&amp;data);
+      
+    let handle = thread::spawn(move || &#123;
+        println!("Shared data: &#123;data_clone&#125;");  // shared data ကို access လုပ်တယ်
+    &#125;);
+      
+    handle.join().unwrap();
+    println!("Main thread data: &#123;data&#125;");  // Threads နှစ်ခုလုံး data ကို မျှဝေထားတယ်
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="using-mutex-for-safe-mutability-across-threads">
+        Threads ကြားမှာ Safe Mutability အတွက် Mutex ကို အသုံးပြုခြင်း
+      </h3>
+      <p>
+        <code>Mutex</code> က mutual exclusion ပေးပြီး data ကိုတစ်ကြိမ်မှာ thread
+        တစ်ခုကဘဲ access ခွင့်ပြုချက် ရရှိအောင် ထိန်းသိမ်းစေပါတယ်။ ဒါကြောင့် threads
+        ကြားမှာ safe mutability ဖြစ်အောင် လုပ်ဆောင်ပေးပါတယ်။
+      </p>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::sync::&#123;Arc, Mutex&#125;;
+use std::thread;
+      
+fn main() &#123;
+    let data = Arc::new(Mutex::new(0));  // Shared, mutable data
+      
+    let mut handles = vec![];
+      
+    for _ in 0..10 &#123;
+        let data_clone = Arc::clone(&amp;data);
+        let handle = thread::spawn(move || &#123;
+            let mut num = data_clone.lock().unwrap();  // mutex lock တယ်
+            *num += 1;  // shared data ကို လုံခြုံစွာ ပြင်ဆင်တယ်
+        &#125;);
+        handles.push(handle);
+    &#125;
+      
+    for handle in handles &#123;
+        handle.join().unwrap();
+    &#125;
+      
+    println!("Final value: &#123;&#125;", *data.lock().unwrap());  // Prints: 10
+&#125;</code></pre>
+      </CodeContainer>
+      <h3 id="message-passing-between-threads">
+        Threads ကြား Message Passing လုပ်ခြင်း 📬
+      </h3>
+      <p>
+        Rust မှာ channels ကိုအသုံးပြုပြီး threads တွေကြား data ကို safe ပုံစံနဲ့
+        ပေးပို့နိုင်ပါတယ်။ shared memory လိုအပ်ချက်မရှိပဲ data ကို လုံခြုံစွာ
+        ပေးပို့ဖို့ channels တွေကို အသုံးပြုနိုင်ပါတယ်။
+      </p>
+      <ul>
+        <li>
+          <code>mpsc</code> ကိုအသုံးပြုခြင်း (Multiple Producer, Single Consumer):
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">use std::sync::mpsc;
+use std::thread;
+use std::time::Duration;
+      
+fn main() &#123;
+    let (tx, rx) = mpsc::channel();  // channel တစ်ခု ဆောက်တယ်။
+      
+    thread::spawn(move || &#123;
+        let val = String::from("မင်္ဂလာပါ");
+        tx.send(val).unwrap();  // မက်ဆေ့ခ်ျပို့လိုက်တယ်
+        println!("spawned thread ကနေ 'မင်္ဂလာပါ' လို့ ပို့လိုက်ပါတယ်");
+    &#125;);
+      
+    // မက်ဆေ့ခ်ျလက်ခံရရှိတယ်
+    let received = rx.recv().unwrap();
+    println!("Received: &#123;received&#125;");
+&#125;</code></pre>
+      </CodeContainer>
+      <p>
+        Rust ရဲ့ အရေးကြီးတဲ့ features တွေကို လိုတိုရှင်းနဲ့ ကျယ်ကျယ်ပြန့်ပြန့်
+        ရှင်းပြပြီးပြီဆိုတော့ Rust ကို စတင်လေ့လာနေသူဖြစ်ဖြစ် ပြန်လေ့လာဖို့
+        လိုနေသူ ဖြစ်ဖြစ် rust ကို စသုံးဖို့ အသင့်ဖြစ်ပါပြီ! 🦀💻
+      </p>
+    </article>
+  </Layout>
+</html>

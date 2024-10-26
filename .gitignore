@@ -46,3 +46,5 @@ cypress/videos/
 
 # Build artifacts
 out/
+
+ci-cd.yml
