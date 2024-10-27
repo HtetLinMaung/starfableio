@@ -104,10 +104,13 @@ if (localStorage.getItem("starfable_language_changed") != "yes") {
     svgSpan.innerHTML = ukSvg;
   }
 }
+
 const currentHref = window.location.href;
 if (currentHref.includes("/mm")) {
   svgSpan.innerHTML = mmSvg;
+  localStorage.setItem("starfable_language", "mm");
 } else {
   svgSpan.innerHTML = ukSvg;
+  localStorage.setItem("starfable_language", "uk");
 }
 //  localStorage.setItem("starfable_language_changed", 'no');
