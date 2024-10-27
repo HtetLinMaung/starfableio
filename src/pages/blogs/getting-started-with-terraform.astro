@@ -1,0 +1,356 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/blog.css";
+import CodeContainer from "../../components/CodeContainer.astro";
+// Define the static content for the blog post
+const blogPost = {
+  title: "🌍 Getting Started with Terraform 🚀",
+  date: "Oct 27, 2024",
+};
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{blogPost.title}</title>
+    <!-- SEO Meta Tags -->
+    <meta
+      name="description"
+      content="Learn how to get started with Terraform, create an S3 bucket, and apply your first Terraform configuration. Perfect for developers looking to automate their AWS infrastructure."
+    />
+    <meta
+      name="keywords"
+      content="Terraform, AWS, S3 bucket, Infrastructure as Code, cloud infrastructure, DevOps, automation"
+    />
+    <meta name="author" content="Htet Lin Maung" />
+
+    <!-- Open Graph Meta Tags for Social Sharing (Facebook, LinkedIn, etc.) -->
+    <meta
+      property="og:title"
+      content="Terraform 101: Installation, S3 Creation, and Apply 🚀"
+    />
+    <meta
+      property="og:description"
+      content="Step-by-step guide to installing Terraform, creating an S3 bucket in AWS, and applying the configuration. Ideal for automating cloud infrastructure with Terraform."
+    />
+    <meta property="og:type" content="article" />
+    <meta
+      property="og:url"
+      content="https://www.starfableio.com/blogs/getting-started-with-terraform/index.html"
+    />
+    <meta
+      property="og:image"
+      content="https://www.starfableio.com/getting-started-with-terraform.png"
+    />
+    <meta property="og:image:alt" content="Getting Started with Terraform" />
+    <meta property="og:site_name" content="StarFableIO" />
+
+    <!-- Twitter Cards Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Terraform 101: Installation, S3 Creation, and Apply 🚀"
+    />
+    <meta
+      name="twitter:description"
+      content="Learn how to install Terraform, create an S3 bucket in AWS, and apply your configuration with this hands-on guide!"
+    />
+    <meta
+      name="twitter:image"
+      content="https://www.starfableio.com/getting-started-with-terraform.png"
+    />
+    <meta name="twitter:site" content="@YourTwitterHandle" />
+
+    <!-- Structured Data for SEO -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": "Terraform 101: Installation, S3 Creation, and Apply",
+        "image": "https://www.starfableio.com/getting-started-with-terraform.png",
+        "author": {
+          "@type": "Person",
+          "name": "Htet Lin Maung"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "StarFableIO",
+          "logo": {
+            "@type": "ImageObject",
+            "url": "https://www.starfableio.com/logo.png"
+          }
+        },
+        "datePublished": "2024-10-27",
+        "description": "Learn how to get started with Terraform, create an S3 bucket in AWS, and apply your first Terraform configuration. Perfect for automating AWS infrastructure."
+      }
+    </script>
+
+    <link rel="stylesheet" href="/atom-one-dark.min.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap"
+      rel="stylesheet"
+    />
+    <script defer src="/scripts/highlight.min.js"></script>
+    <script src="/scripts/blog.js" defer></script>
+  </head>
+  <Layout>
+    <svg
+      onclick="toggleMenu()"
+      class="menu-toggle-svg"
+      width="48"
+      height="48"
+      viewBox="0 0 48 48"
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <rect width="48" height="48" rx="24" fill="#1D1E22"></rect>
+      <path
+        fill-rule="evenodd"
+        clip-rule="evenodd"
+        d="M34.276 28.6093C34.026 28.8593 33.6869 28.9997 33.3333 28.9997C32.9798 28.9997 32.6407 28.8593 32.3907 28.6093L24 20.2186L15.6093 28.6093C15.3579 28.8522 15.0211 28.9866 14.6715 28.9835C14.3219 28.9805 13.9875 28.8403 13.7403 28.5931C13.493 28.3459 13.3528 28.0114 13.3498 27.6618C13.3467 27.3123 13.4811 26.9755 13.724 26.724L22.1147 18.3333C22.6148 17.8334 23.2929 17.5526 24 17.5526C24.7071 17.5526 25.3853 17.8334 25.8853 18.3333L34.276 26.724C34.526 26.974 34.6664 27.3131 34.6664 27.6666C34.6664 28.0202 34.526 28.3593 34.276 28.6093Z"
+        fill="white"></path>
+    </svg>
+    <nav class="side-nav">
+      <a
+        href="#installing-terraform"
+        onclick="scrollToSection(event, '#installing-terraform')"
+        >Installing Terraform</a
+      >
+      <a
+        href="#setting-up-aws-credentials"
+        onclick="scrollToSection(event, '#setting-up-aws-credentials')"
+        >Setting Up AWS Credentials</a
+      >
+      <a
+        href="#set-up-terraform-and-create-an-s3-bucket-in-aws"
+        onclick="scrollToSection(event, '#set-up-terraform-and-create-an-s3-bucket-in-aws')"
+        >Set Up Terraform and Create an S3 Bucket in AWS</a
+      >
+      <a
+        class="sub"
+        href="#step-1-initialize-your-working-directory"
+        onclick="scrollToSection(event, '#step-1-initialize-your-working-directory')"
+        >Step 1 Initialize Your Working Directory</a
+      >
+      <a
+        class="sub"
+        href="#step-2-writing-the-terraform-code"
+        onclick="scrollToSection(event, '#step-2-writing-the-terraform-code')"
+        >Step 2 Writing the Terraform Code</a
+      >
+      <a
+        href="#applying-the-terraform-configuration"
+        onclick="scrollToSection(event, '#applying-the-terraform-configuration')"
+        >Applying the Terraform Configuration</a
+      >
+      <a
+        class="sub"
+        href="#step-1-initialize-terraform"
+        onclick="scrollToSection(event, '#step-1-initialize-terraform')"
+        >Step 1 Initialize Terraform</a
+      >
+      <a
+        class="sub"
+        href="#step-2-plan-the-terraform-changes"
+        onclick="scrollToSection(event, '#step-2-plan-the-terraform-changes')"
+        >Step 2 Plan the Terraform Changes</a
+      >
+      <a
+        class="sub"
+        href="#step-3-apply-the-configuration"
+        onclick="scrollToSection(event, '#step-3-apply-the-configuration')"
+        >Step 3 Apply the Configuration</a
+      >
+      <a
+        href="#verify-the-s3-bucket"
+        onclick="scrollToSection(event, '#verify-the-s3-bucket')"
+        >Verify the S3 Bucket</a
+      >
+      <a
+        href="#clean-up-destroy-the-resources"
+        onclick="scrollToSection(event, '#clean-up-destroy-the-resources')"
+        >Clean Up Destroy the Resources</a
+      >
+      <a href="#conclusion" onclick="scrollToSection(event, '#conclusion')"
+        >Conclusion</a
+      >
+    </nav>
+    <article class="blog-post">
+      <h1>{blogPost.title}</h1>
+      <p class="date">{blogPost.date}</p>
+      <div class="author-profile">
+        <img src="/profile.jpeg" alt="Author Photo" class="author-photo" />
+        <div>
+          <p class="author-name">Htet Lin Maung</p>
+        </div>
+      </div>
+      <img
+        src="/getting-started-with-terraform.png"
+        alt="Getting started with Terraform"
+        class="blog-image"
+      />
+      <div class="content">
+        <p>
+          Managing infrastructure manually can be time-consuming and
+          error-prone, especially as your project scales. Enter Terraform—an
+          infrastructure as code (IaC) tool that simplifies managing cloud
+          resources. This guide will walk you through installing Terraform,
+          creating an S3 bucket in AWS, and applying your Terraform
+          configuration. Let’s dive in! 🛠️
+        </p>
+        <h2 id="installing-terraform">Installing Terraform ⚙️</h2>
+        <p>
+          To get started, you first need to install Terraform on your system.
+          Terraform provides installation guides for all major operating systems
+          on their <a href="https://developer.hashicorp.com/terraform/install"
+            >official website</a
+          >. Just follow the steps for your platform, and once installed, you
+          can verify it by running:
+        </p>
+        <CodeContainer
+          ><pre><code class="language-bash">terraform -v
+</code></pre></CodeContainer
+        >
+        <h2 id="setting-up-aws-credentials">Setting Up AWS Credentials 🔑</h2>
+        <p>
+          Before using Terraform with AWS, you need to set up your AWS Access
+          Key and Secret Key. Here's a quick guide:
+        </p>
+        <ol>
+          <li>
+            Log in to your <a href="https://aws.amazon.com/console"
+              >AWS Management Console</a
+            >.
+          </li>
+          <li>Navigate to IAM (Identity and Access Management).</li>
+          <li>
+            Go to Users, select your user, and click on the Security credentials
+            tab.
+          </li>
+          <li>
+            Create Access keys by clicking Create access key. You’ll get an
+            Access Key ID and Secret Access Key—store these securely.
+          </li>
+        </ol>
+        <p>
+          Add them to your system’s environment variables for Terraform to use,
+          or use the AWS CLI for easier credential management.
+        </p>
+        <h2 id="set-up-terraform-and-create-an-s3-bucket-in-aws">
+          Set Up Terraform and Create an S3 Bucket in AWS 📦
+        </h2>
+        <p>
+          In this section, we’ll use Terraform to create an S3 bucket. Here’s
+          the process.
+        </p>
+        <h3 id="step-1-initialize-your-working-directory">
+          Step 1: Initialize Your Working Directory
+        </h3>
+        <ol>
+          <li>Create a New Directory for your Terraform project:</li>
+        </ol>
+        <CodeContainer
+          ><pre><code class="language-bash">mkdir terraform-s3-demo
+cd terraform-s3-demo
+</code></pre></CodeContainer
+        >
+        <ol start="2">
+          <li>
+            Create Your Terraform Configuration File (usually <code
+              >main.tf</code
+            >):
+          </li>
+        </ol>
+        <CodeContainer
+          ><pre><code class="language-bash">touch main.tf
+</code></pre></CodeContainer
+        >
+        <h3 id="step-2-writing-the-terraform-code">
+          Step 2: Writing the Terraform Code
+        </h3>
+        <p>
+          Open <code>main.tf</code> in your favorite editor and add the following
+          configuration:
+        </p>
+        <CodeContainer
+          ><pre><code class="language-ruby"># Provider Block
+provider "aws" &#123;
+  region = "us-east-1" # Specify your region here
+&#125;
+
+resource "aws_s3_bucket" "my_bucket" &#123;
+  bucket = "my-terraform-demo-bucket-123456"
+
+  tags = &#123;
+    Name        = "Terraform Demo S3 Bucket"
+    Environment = "Dev"
+  &#125;
+&#125;
+</code></pre></CodeContainer
+        >
+        <h2 id="applying-the-terraform-configuration">
+          Applying the Terraform Configuration 🚀
+        </h2>
+        <p>Once you have your configuration ready, it’s time to run it!</p>
+        <h3 id="step-1-initialize-terraform">
+          Step 1: Initialize Terraform 🛠️
+        </h3>
+        <p>
+          Terraform needs to initialize your project before creating resources.
+          Run:
+        </p>
+        <CodeContainer
+          ><pre><code class="language-bash">terraform init
+</code></pre></CodeContainer
+        >
+        <h3 id="step-2-plan-the-terraform-changes">
+          Step 2: Plan the Terraform Changes 🧾
+        </h3>
+        <p>Review what Terraform will do without making changes yet:</p>
+        <CodeContainer
+          ><pre><code class="language-bash">terraform plan
+</code></pre></CodeContainer
+        >
+        <h3 id="step-3-apply-the-configuration">
+          Step 3: Apply the Configuration 💥
+        </h3>
+        <p>
+          Now that everything looks good, apply the configuration to create your
+          S3 bucket:
+        </p>
+        <CodeContainer
+          ><pre><code class="language-bash">terraform apply
+</code></pre></CodeContainer
+        >
+        <p>
+          Terraform will prompt you to confirm the action. Type <code>yes</code>
+          to proceed.
+        </p>
+        <h2 id="verify-the-s3-bucket">Verify the S3 Bucket 🎉</h2>
+        <p>
+          After applying the configuration, check the AWS S3 console to verify
+          the bucket was created successfully.
+        </p>
+        <h2 id="clean-up-destroy-the-resources">
+          Clean Up: Destroy the Resources 🧹
+        </h2>
+        <p>If you want to remove the resources Terraform created, use:</p>
+        <CodeContainer
+          ><pre><code class="language-bash">terraform destroy
+</code></pre></CodeContainer
+        >
+        <p>
+          Confirm the action, and Terraform will delete the S3 bucket and any
+          other resources it managed.
+        </p>
+        <h2 id="conclusion">Conclusion 🏁</h2>
+        <p>
+          Congrats! 🎉 You’ve successfully installed Terraform, created an S3
+          bucket, and applied your first Terraform configuration.
+        </p>
+      </div>
+    </article>
+  </Layout>
+</html>
