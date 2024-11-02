@@ -2,6 +2,7 @@
 import Layout from "../../../layouts/Layout.astro";
 import "../../../styles/blog.css";
 import CodeContainer from "../../../components/CodeContainer.astro";
+import AlertCard from "../../../components/AlertCard.astro";
 // Define the static content for the blog post
 const blogPost = {
   title: "🚀 Rust ကို မြန်မြန် ကျွမ်းကျင်နိုင်ဖို့ သိထားသင့်တဲ့ အချက်များ 🦀",
@@ -307,7 +308,9 @@ const blogPost = {
         <h2 id="constants">Constants 🚦</h2>
         <p>
           Constants ဟာ variables နဲ့ တူပေမယ့် အမြဲတမ်း immutable ဖြစ်ပြီး type
-          ကို ဖော်ပြဖို့လိုပါတယ်။ စာဖတ်သူအနေနဲ့ ဘယ်တော့မှ မပြောင်းလဲတဲ့
+          ကို ဖော်ပြဖို့လိုပါတယ်။ Variables နဲ့ မတူတာက Constants တွေဟာ memory
+          မှာနေရာမယူပါဘူး။ အဲဒီအစား သူတို့ကို အသုံးပြုတဲ့နေရာမှာ တိုက်ရိုက်
+          အစားထိုးပေးထားတာပဲဖြစ်ပါတယ်။ စာဖတ်သူအနေနဲ့ ဘယ်တော့မှ မပြောင်းလဲတဲ့
           တန်ဖိုးတစ်ခုလိုချင်တယ်ဆိုရင်တော့ Constants ကို သုံးပါ။
         </p>
         <CodeContainer>
@@ -316,7 +319,11 @@ const blogPost = {
         <h2 id="shadowing">Shadowing 🕶️</h2>
         <p>
           Shadowing က variable တစ်ခုကို နာမည်တူအသစ်ပြန် declare ခွင့်ပေးပြီး
-          တန်ဖိုးအသစ်နဲ့ ပြန်စနိုင်အောင် လုပ်ဆောင်ပေးတာပါ။
+          တန်ဖိုးအသစ်နဲ့ ပြန်စနိုင်အောင် လုပ်ဆောင်ပေးတာပါ။ ဒီပုံစံက mutability
+          မပြောင်းဘဲ data ကို ပြောင်းလဲဖို့ အထူးအသုံးဝင်ပါတယ်။ ထို့အပြင်
+          Shadowing က Nested scope တွေမှာ variable ရဲ့ အမျိုးအစား (သို့) value
+          ကို ပြန်လည်သတ်မှတ်နိုင်စွမ်းလည်း ရှိပါတယ်၊ ဒါဟာ LIFO (Last In, First
+          Out) နည်းလမ်းအတိုင်း လုပ်ဆောင်ပြီး code ကို ဖတ်လို့ အဆင်ပြေစေပါတယ်။
         </p>
         <CodeContainer>
           <pre><code class="language-rust">fn main() &#123;
@@ -397,8 +404,9 @@ const blogPost = {
         </CodeContainer>
         <ul>
           <li>
-            <code>For</code>: Rust ရဲ့ <code>for</code> loop က ranges, arrays နဲ့
-            အခြား collections တွေကို iterating လုပ်ဖို့ အရမ်းအသုံးဝင်ပါတယ်။
+            <code>For</code>: Rust ရဲ့ <code>for</code> loop က Iterator trait ကို
+            implement လုပ်ထားတဲ့ ranges, arrays နဲ့ အခြား collections တွေကို iterating
+            လုပ်ဖို့ အရမ်းအသုံးဝင်ပါတယ်။
           </li>
         </ul>
         <CodeContainer>
@@ -431,6 +439,13 @@ const blogPost = {
     // println!("&#123;s&#125;");  // Error: s ကိုသုံးမရတော့ပါ
 &#125;</code></pre>
         </CodeContainer>
+        <AlertCard type="info">
+          Rust မှာ <code>Copy</code> trait ကို implement လုပ်ထားတဲ့ type တွေကို သိမ်းဆည်းဖို့
+          အလွယ်တကူ assignment လုပ်နိုင်ပြီး၊ Bitwise copy အဖြစ် duplicate လုပ်နိုင်ပါတယ်။
+          Integer နဲ့ Float လို Primitive type တွေနဲ့ အချို့ Compound type တွေက
+          <code>Copy</code> trait ကို implement လုပ်ထားပါတယ်။ <code>Copy</code> trait
+          implement မလုပ်တဲ့ type တွေကတော့ ownership move ပါတယ်။</AlertCard
+        >
         <h3 id="borrowing">Borrowing</h3>
         <p>
           Ownership ကို ပြောင်းမပေးဘဲ reference ဖြင့် value တွေကို
@@ -521,6 +536,14 @@ fn change(some_string: &amp;mut String) &#123;
             </ul>
           </li>
         </ul>
+        <AlertCard type="info">
+          Rust မှာ allocation ရဲ့ size ကို type ကပဲဆုံးဖြတ်ပေးပါတယ်။
+          ပုံမှန်အားဖြင့် primitive type တွေကို stack မှာ သိမ်းဆည်းပေမယ့်၊ box
+          လုပ်ထားခဲ့ရင် heap ပေါ်မှာလည်း allocate လုပ်နိုင်ပါတယ်။ complex type
+          တွေကိုလည်း stack မှာရော heap မှာရော ထားနိုင်ပါတယ်။ Stack နဲ့ heap ထဲ
+          ဘယ်မှာသိမ်းမလဲဆိုတာကို ownership နဲ့ lifetime အခြေအနေတွေပေါ်မူတည်ပြီး
+          ရွေးချယ်ရပါတယ်။
+        </AlertCard>
         <h2 id="slices">Slices 🔪</h2>
         <p>
           Rust ရဲ့ slice က collection (array သို့မဟုတ် string) ရဲ့
@@ -1017,7 +1040,7 @@ mod tests &#123;
         > လို functional operations တွေကို လွယ်ကူစွာ ပြုလုပ်နိုင်ပါတယ်။
       </p>
       <ul>
-        <li>Vector တစ်ခုအပေါ် iterate လုပ်ခြင်း:</li>
+        <li>Vector တစ်ခုအပေါ် iterate လုပ်ခြင်း -</li>
       </ul>
       <CodeContainer>
         <pre><code class="language-rust">fn main() &#123;
@@ -1026,6 +1049,17 @@ mod tests &#123;
     for num in numbers.iter() &#123;
         println!("&#123;num&#125;"); // Prints each number
     &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          <code>for_each</code> ကို Closure နဲ့ အသုံးပြုခြင်း -
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4, 5];
+    numbers.iter().for_each(|&num| println!("&#123;num&#125;")); // နံပါတ်တစ်ခုချင်းစီကို print တယ်
 &#125;</code></pre>
       </CodeContainer>
       <ul>
