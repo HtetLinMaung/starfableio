@@ -2,6 +2,7 @@
 import Layout from "../../layouts/Layout.astro";
 import "../../styles/blog.css";
 import CodeContainer from "../../components/CodeContainer.astro";
+import AlertCard from "../../components/AlertCard.astro";
 // Define the static content for the blog post
 const blogPost = {
   title: "🚀 Master Rust Quickly: Key Features You Need to Know 🦀",
@@ -309,17 +310,23 @@ const blogPost = {
         </CodeContainer>
         <h2 id="constants">Constants 🚦</h2>
         <p>
-          Constants are like variables, but they are always immutable and must
-          be explicitly typed. Use them when you need a value that will never
-          change!
+          Constants in Rust are similar to variables in that they hold values,
+          but they’re always immutable and must have an explicit type. Unlike
+          variables, constants don’t occupy memory at a specific address;
+          instead, their value is directly inlined wherever they’re used. Use
+          them for values that are fixed and unchanging throughout your program!
         </p>
         <CodeContainer>
           <pre><code class="language-rust">const MAX_POINTS: u32 = 100;</code></pre>
         </CodeContainer>
         <h2 id="shadowing">Shadowing 🕶️</h2>
         <p>
-          Shadowing allows you to declare a new variable with the same name,
-          giving it a fresh start while keeping your code clean!
+          Shadowing lets you declare a new variable with the same name as a
+          previous one, effectively giving it a “fresh start” in the same scope.
+          This is useful for transforming data without changing mutability.
+          Shadowing also allows you to redefine a variable’s type or value in
+          nested scopes, following a last-in, first-out (LIFO) stack order,
+          which can help keep your code organized and readable!
         </p>
         <CodeContainer>
           <pre><code class="language-rust">fn main() &#123;
@@ -400,8 +407,9 @@ const blogPost = {
         </CodeContainer>
         <ul>
           <li>
-            <code>For</code>: Rust's <code>for</code> loop is great for iterating
-            over ranges, arrays, and other collections.
+            <code>For</code>: <code>for</code> loop is perfect for iterating over
+            anything that implements the <code>Iterator</code> trait, such as ranges,
+            arrays, and other collections.
           </li>
         </ul>
         <CodeContainer>
@@ -434,6 +442,14 @@ const blogPost = {
     // println!("&#123;s&#125;");  // Error: s is no longer valid
 &#125;</code></pre>
         </CodeContainer>
+        <AlertCard type="info"
+          >In Rust, types that implement the <code>Copy</code> trait can be duplicated
+          with a simple assignment, resulting in a bitwise copy. Primitive types
+          like integers and floats, as well as some compound types, implement <code
+            >Copy</code
+          >. Types that don't implement <code>Copy</code> are moved, transferring
+          ownership to the new variable.</AlertCard
+        >
         <h3 id="borrowing">Borrowing</h3>
         <p>
           Instead of transferring ownership, you can borrow values using
@@ -518,6 +534,13 @@ fn change(some_string: &amp;mut String) &#123;
             </ul>
           </li>
         </ul>
+        <AlertCard type="info"
+          >In Rust, the size of allocations is determined by the type. While
+          primitives are typically stored on the stack, they can be allocated on
+          the heap if boxed. Similarly, complex types can reside on the stack or
+          heap, depending on how they're used. The choice between stack and heap
+          storage is influenced by ownership and lifetime considerations.</AlertCard
+        >
         <h2 id="slices">Slices 🔪</h2>
         <p>
           A slice in Rust lets you reference a section of a collection (like an
@@ -906,6 +929,14 @@ fn main() &#123;
     &#125;
 &#125;</code></pre>
       </CodeContainer>
+      <AlertCard type="info">
+        <code>static</code> items in Rust represent a fixed memory location and have
+        a <code>'static</code> lifetime, meaning they exist for the duration of the
+        program. By default, <code>static</code> items are immutable, but they can
+        be made mutable using <code>static mut</code>, though this requires
+        unsafe code to access. Unlike <code>const</code>, <code>static</code>
+        items are not inlined and have a single memory address.
+      </AlertCard>
       <h2 id="error-handling">Error Handling ⚠️</h2>
       <p>
         Rust avoids exceptions and prefers using <code>Result</code> and <code
@@ -995,10 +1026,13 @@ mod tests &#123;
       </p>
       <h2 id="iterators">Iterators 🔄</h2>
       <p>
-        Iterators in Rust provide a powerful way to process sequences of values.
-        You can chain and combine methods like <code>map</code>, <code
-          >filter</code
-        >, and <code>fold</code> to perform functional-style operations on collections.
+        Iterators in Rust provide a flexible and powerful way to process
+        sequences of values. Rather than just being a simple loop, they allow
+        chaining methods like <code>map</code>, <code>filter</code>, <code
+          >for_each</code
+        >, and <code>fold</code> to perform functional-style transformations and
+        operations on collections. Advanced Rust users often prefer iterators for
+        their concise control flow and efficiency. Iterating Over a Vector:
       </p>
       <ul>
         <li>Iterating Over a Vector:</li>
@@ -1010,6 +1044,18 @@ mod tests &#123;
     for num in numbers.iter() &#123;
         println!("&#123;num&#125;"); // Prints each number
     &#125;
+&#125;</code></pre>
+      </CodeContainer>
+      <ul>
+        <li>
+          Using <code>for_each</code> with a Closure: You can apply a function to
+          each item in a collection using <code>for_each</code>.
+        </li>
+      </ul>
+      <CodeContainer>
+        <pre><code class="language-rust">fn main() &#123;
+    let numbers = vec![1, 2, 3, 4, 5];
+    numbers.iter().for_each(|&num| println!("&#123;num&#125;")); // Prints each number
 &#125;</code></pre>
       </CodeContainer>
       <ul>
